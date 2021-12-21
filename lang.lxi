@@ -38,11 +38,3 @@ CHARACTER [A-Za-z0-9 ]
 		 
 .  printf("Error\n");
 %%
-  
-int yywrap(){}
-int main(){
-  
-yylex();
-  
-return 0;
-}

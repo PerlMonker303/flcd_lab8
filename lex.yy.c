@@ -694,7 +694,7 @@ printf( "%s negative integer\n", yytext );
 case 2:
 YY_RULE_SETUP
 #line 19 "lang.lxi"
-printf("Error: negative zero digit\n");
+printf("Error: negative zero digit %s\n", yytext);
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
@@ -1639,11 +1639,3 @@ int main()
 #endif
 #line 40 "lang.lxi"
 
-  
-int yywrap(){}
-int main(){
-  
-yylex();
-  
-return 0;
-}

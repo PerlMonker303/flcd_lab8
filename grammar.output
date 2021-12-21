@@ -1,0 +1,1770 @@
+Grammar
+
+    0 $accept: program $end
+
+    1 program: START cmds FINISH
+
+    2 cmds: cmd cmdsconf
+
+    3 cmdsconf: Epsilon
+    4         | cmds
+
+    5 cmd: simplecmd
+    6    | structcmd
+
+    7 simplecmd: defcmd
+    8          | assigncmd
+    9          | readcmd
+   10          | printcmd
+   11          | returncmd
+
+   12 defcmd: DEF declist
+
+   13 declist: declaration declistconf
+
+   14 declistconf: Epsilon
+   15            | ';' declist
+
+   16 declaration: id ':' dtype
+
+   17 dtype: primitive
+   18      | arraydecl
+
+   19 primitive: NUMBER
+   20          | STRING
+   21          | CHAR
+
+   22 arraydecl: ARRAY '[' arraydeclconf
+
+   23 arraydeclconf: constant ']' OF primitive
+   24              | id ']' OF primitive
+
+   25 assigncmd: ASSIGN id ':' assigncmdconf
+
+   26 assigncmdconf: symbolvalue
+   27              | '(' expressionstart ')'
+   28              | UNDEFINED
+
+   29 symbolvalue: id symbolvalueid
+   30            | constant
+   31            | '[' symbolvalueconf
+
+   32 symbolvalueid: Epsilon
+   33              | '[' symbolvalueconf
+
+   34 symbolvalueconf: id ']'
+   35                | constant ']'
+
+   36 expressionstart: term expression
+
+   37 expression: '+' term expression
+   38           | '-' term expression
+   39           | Epsilon
+
+   40 term: factor muldiv
+
+   41 muldiv: '*' factor muldiv
+   42       | '/' factor muldiv
+   43       | Epsilon
+
+   44 factor: '(' expressionstart ')'
+   45       | symbolvalue
+
+   46 readcmd: READ id readcmdconf
+
+   47 readcmdconf: Epsilon
+   48            | '[' symbolvalueconf
+
+   49 printcmd: PRINT '(' expressionprint ')'
+
+   50 expressionprint: factorprint expressionprintconf
+
+   51 expressionprintconf: Epsilon
+   52                    | '+' expressionprint
+
+   53 factorprint: id
+   54            | constant
+   55            | callstmt
+
+   56 returncmd: RETURN returncmdconf
+
+   57 returncmdconf: expressionstart
+   58              | callstmt
+
+   59 structcmd: ifstmt
+   60          | whilestmt
+   61          | procstmt
+   62          | callstmt
+
+   63 ifstmt: IF condition STARTIF cmds FINISHIF
+
+   64 condition: basiccondition conditionconf
+
+   65 conditionconf: Epsilon
+   66              | logicaloperator condition
+
+   67 basiccondition: symbolvalue comparisonoperator basicconditionconf
+
+   68 basicconditionconf: symbolvalue
+   69                   | UNDEFINED
+
+   70 comparisonoperator: "<"
+   71                   | ">"
+   72                   | "<="
+   73                   | ">="
+   74                   | "==="
+   75                   | "!=="
+
+   76 logicaloperator: '&'
+   77                | '|'
+
+   78 whilestmt: WHILE condition STARTWHILE cmds FINISHWHILE
+
+   79 procstmt: PROC id '(' procstmtconf
+
+   80 procstmtconf: ')' STARTPROC cmds FINISHPROC
+   81             | declist ')' STARTPROC cmds FINISHPROC
+
+   82 callstmt: CALL id '(' paramslist ')'
+
+   83 paramslist: expressionstart paramslistconf
+   84           | Epsilon
+
+   85 paramslistconf: Epsilon
+   86               | ',' paramslist
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'&' (38) 76
+'(' (40) 27 44 49 79 82
+')' (41) 27 44 49 80 81 82
+'*' (42) 41
+'+' (43) 37 52
+',' (44) 86
+'-' (45) 38
+'/' (47) 42
+':' (58) 16 25
+';' (59) 15
+'[' (91) 22 31 33 48
+']' (93) 23 24 34 35
+'|' (124) 77
+error (256)
+START (258) 1
+FINISH (259) 1
+DEF (260) 12
+NUMBER (261) 19
+STRING (262) 20
+CHAR (263) 21
+ARRAY (264) 22
+OF (265) 23 24
+UNDEFINED (266) 28 69
+READ (267) 46
+IF (268) 63
+STARTIF (269) 63
+FINISHIF (270) 63
+ASSIGN (271) 25
+WHILE (272) 78
+STARTWHILE (273) 78
+FINISHWHILE (274) 78
+PROC (275) 79
+STARTPROC (276) 80 81
+FINISHPROC (277) 80 81
+CALL (278) 82
+RETURN (279) 56
+PRINT (280) 49
+id (281) 16 24 25 29 34 46 53 79 82
+constant (282) 23 30 35 54
+Epsilon (283) 3 14 32 39 43 47 51 65 84 85
+"<" (284) 70
+">" (285) 71
+"<=" (286) 72
+">=" (287) 73
+"===" (288) 74
+"!==" (289) 75
+
+
+Nonterminals, with rules where they appear
+
+$accept (48)
+    on left: 0
+program (49)
+    on left: 1, on right: 0
+cmds (50)
+    on left: 2, on right: 1 4 63 78 80 81
+cmdsconf (51)
+    on left: 3 4, on right: 2
+cmd (52)
+    on left: 5 6, on right: 2
+simplecmd (53)
+    on left: 7 8 9 10 11, on right: 5
+defcmd (54)
+    on left: 12, on right: 7
+declist (55)
+    on left: 13, on right: 12 15 81
+declistconf (56)
+    on left: 14 15, on right: 13
+declaration (57)
+    on left: 16, on right: 13
+dtype (58)
+    on left: 17 18, on right: 16
+primitive (59)
+    on left: 19 20 21, on right: 17 23 24
+arraydecl (60)
+    on left: 22, on right: 18
+arraydeclconf (61)
+    on left: 23 24, on right: 22
+assigncmd (62)
+    on left: 25, on right: 8
+assigncmdconf (63)
+    on left: 26 27 28, on right: 25
+symbolvalue (64)
+    on left: 29 30 31, on right: 26 45 67 68
+symbolvalueid (65)
+    on left: 32 33, on right: 29
+symbolvalueconf (66)
+    on left: 34 35, on right: 31 33 48
+expressionstart (67)
+    on left: 36, on right: 27 44 57 83
+expression (68)
+    on left: 37 38 39, on right: 36 37 38
+term (69)
+    on left: 40, on right: 36 37 38
+muldiv (70)
+    on left: 41 42 43, on right: 40 41 42
+factor (71)
+    on left: 44 45, on right: 40 41 42
+readcmd (72)
+    on left: 46, on right: 9
+readcmdconf (73)
+    on left: 47 48, on right: 46
+printcmd (74)
+    on left: 49, on right: 10
+expressionprint (75)
+    on left: 50, on right: 49 52
+expressionprintconf (76)
+    on left: 51 52, on right: 50
+factorprint (77)
+    on left: 53 54 55, on right: 50
+returncmd (78)
+    on left: 56, on right: 11
+returncmdconf (79)
+    on left: 57 58, on right: 56
+structcmd (80)
+    on left: 59 60 61 62, on right: 6
+ifstmt (81)
+    on left: 63, on right: 59
+condition (82)
+    on left: 64, on right: 63 66 78
+conditionconf (83)
+    on left: 65 66, on right: 64
+basiccondition (84)
+    on left: 67, on right: 64
+basicconditionconf (85)
+    on left: 68 69, on right: 67
+comparisonoperator (86)
+    on left: 70 71 72 73 74 75, on right: 67
+logicaloperator (87)
+    on left: 76 77, on right: 66
+whilestmt (88)
+    on left: 78, on right: 60
+procstmt (89)
+    on left: 79, on right: 61
+procstmtconf (90)
+    on left: 80 81, on right: 79
+callstmt (91)
+    on left: 82, on right: 55 58 62
+paramslist (92)
+    on left: 83 84, on right: 82 86
+paramslistconf (93)
+    on left: 85 86, on right: 83
+
+
+state 0
+
+    0 $accept: . program $end
+
+    START  shift, and go to state 1
+
+    program  go to state 2
+
+
+state 1
+
+    1 program: START . cmds FINISH
+
+    DEF     shift, and go to state 3
+    READ    shift, and go to state 4
+    IF      shift, and go to state 5
+    ASSIGN  shift, and go to state 6
+    WHILE   shift, and go to state 7
+    PROC    shift, and go to state 8
+    CALL    shift, and go to state 9
+    RETURN  shift, and go to state 10
+    PRINT   shift, and go to state 11
+
+    cmds       go to state 12
+    cmd        go to state 13
+    simplecmd  go to state 14
+    defcmd     go to state 15
+    assigncmd  go to state 16
+    readcmd    go to state 17
+    printcmd   go to state 18
+    returncmd  go to state 19
+    structcmd  go to state 20
+    ifstmt     go to state 21
+    whilestmt  go to state 22
+    procstmt   go to state 23
+    callstmt   go to state 24
+
+
+state 2
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 25
+
+
+state 3
+
+   12 defcmd: DEF . declist
+
+    id  shift, and go to state 26
+
+    declist      go to state 27
+    declaration  go to state 28
+
+
+state 4
+
+   46 readcmd: READ . id readcmdconf
+
+    id  shift, and go to state 29
+
+
+state 5
+
+   63 ifstmt: IF . condition STARTIF cmds FINISHIF
+
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    '['       shift, and go to state 32
+
+    symbolvalue     go to state 33
+    condition       go to state 34
+    basiccondition  go to state 35
+
+
+state 6
+
+   25 assigncmd: ASSIGN . id ':' assigncmdconf
+
+    id  shift, and go to state 36
+
+
+state 7
+
+   78 whilestmt: WHILE . condition STARTWHILE cmds FINISHWHILE
+
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    '['       shift, and go to state 32
+
+    symbolvalue     go to state 33
+    condition       go to state 37
+    basiccondition  go to state 35
+
+
+state 8
+
+   79 procstmt: PROC . id '(' procstmtconf
+
+    id  shift, and go to state 38
+
+
+state 9
+
+   82 callstmt: CALL . id '(' paramslist ')'
+
+    id  shift, and go to state 39
+
+
+state 10
+
+   56 returncmd: RETURN . returncmdconf
+
+    CALL      shift, and go to state 9
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    '['       shift, and go to state 32
+    '('       shift, and go to state 40
+
+    symbolvalue      go to state 41
+    expressionstart  go to state 42
+    term             go to state 43
+    factor           go to state 44
+    returncmdconf    go to state 45
+    callstmt         go to state 46
+
+
+state 11
+
+   49 printcmd: PRINT . '(' expressionprint ')'
+
+    '('  shift, and go to state 47
+
+
+state 12
+
+    1 program: START cmds . FINISH
+
+    FINISH  shift, and go to state 48
+
+
+state 13
+
+    2 cmds: cmd . cmdsconf
+
+    DEF      shift, and go to state 3
+    READ     shift, and go to state 4
+    IF       shift, and go to state 5
+    ASSIGN   shift, and go to state 6
+    WHILE    shift, and go to state 7
+    PROC     shift, and go to state 8
+    CALL     shift, and go to state 9
+    RETURN   shift, and go to state 10
+    PRINT    shift, and go to state 11
+    Epsilon  shift, and go to state 49
+
+    cmds       go to state 50
+    cmdsconf   go to state 51
+    cmd        go to state 13
+    simplecmd  go to state 14
+    defcmd     go to state 15
+    assigncmd  go to state 16
+    readcmd    go to state 17
+    printcmd   go to state 18
+    returncmd  go to state 19
+    structcmd  go to state 20
+    ifstmt     go to state 21
+    whilestmt  go to state 22
+    procstmt   go to state 23
+    callstmt   go to state 24
+
+
+state 14
+
+    5 cmd: simplecmd .
+
+    $default  reduce using rule 5 (cmd)
+
+
+state 15
+
+    7 simplecmd: defcmd .
+
+    $default  reduce using rule 7 (simplecmd)
+
+
+state 16
+
+    8 simplecmd: assigncmd .
+
+    $default  reduce using rule 8 (simplecmd)
+
+
+state 17
+
+    9 simplecmd: readcmd .
+
+    $default  reduce using rule 9 (simplecmd)
+
+
+state 18
+
+   10 simplecmd: printcmd .
+
+    $default  reduce using rule 10 (simplecmd)
+
+
+state 19
+
+   11 simplecmd: returncmd .
+
+    $default  reduce using rule 11 (simplecmd)
+
+
+state 20
+
+    6 cmd: structcmd .
+
+    $default  reduce using rule 6 (cmd)
+
+
+state 21
+
+   59 structcmd: ifstmt .
+
+    $default  reduce using rule 59 (structcmd)
+
+
+state 22
+
+   60 structcmd: whilestmt .
+
+    $default  reduce using rule 60 (structcmd)
+
+
+state 23
+
+   61 structcmd: procstmt .
+
+    $default  reduce using rule 61 (structcmd)
+
+
+state 24
+
+   62 structcmd: callstmt .
+
+    $default  reduce using rule 62 (structcmd)
+
+
+state 25
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+state 26
+
+   16 declaration: id . ':' dtype
+
+    ':'  shift, and go to state 52
+
+
+state 27
+
+   12 defcmd: DEF declist .
+
+    $default  reduce using rule 12 (defcmd)
+
+
+state 28
+
+   13 declist: declaration . declistconf
+
+    Epsilon  shift, and go to state 53
+    ';'      shift, and go to state 54
+
+    declistconf  go to state 55
+
+
+state 29
+
+   46 readcmd: READ id . readcmdconf
+
+    Epsilon  shift, and go to state 56
+    '['      shift, and go to state 57
+
+    readcmdconf  go to state 58
+
+
+state 30
+
+   29 symbolvalue: id . symbolvalueid
+
+    Epsilon  shift, and go to state 59
+    '['      shift, and go to state 60
+
+    symbolvalueid  go to state 61
+
+
+state 31
+
+   30 symbolvalue: constant .
+
+    $default  reduce using rule 30 (symbolvalue)
+
+
+state 32
+
+   31 symbolvalue: '[' . symbolvalueconf
+
+    id        shift, and go to state 62
+    constant  shift, and go to state 63
+
+    symbolvalueconf  go to state 64
+
+
+state 33
+
+   67 basiccondition: symbolvalue . comparisonoperator basicconditionconf
+
+    "<"    shift, and go to state 65
+    ">"    shift, and go to state 66
+    "<="   shift, and go to state 67
+    ">="   shift, and go to state 68
+    "==="  shift, and go to state 69
+    "!=="  shift, and go to state 70
+
+    comparisonoperator  go to state 71
+
+
+state 34
+
+   63 ifstmt: IF condition . STARTIF cmds FINISHIF
+
+    STARTIF  shift, and go to state 72
+
+
+state 35
+
+   64 condition: basiccondition . conditionconf
+
+    Epsilon  shift, and go to state 73
+    '&'      shift, and go to state 74
+    '|'      shift, and go to state 75
+
+    conditionconf    go to state 76
+    logicaloperator  go to state 77
+
+
+state 36
+
+   25 assigncmd: ASSIGN id . ':' assigncmdconf
+
+    ':'  shift, and go to state 78
+
+
+state 37
+
+   78 whilestmt: WHILE condition . STARTWHILE cmds FINISHWHILE
+
+    STARTWHILE  shift, and go to state 79
+
+
+state 38
+
+   79 procstmt: PROC id . '(' procstmtconf
+
+    '('  shift, and go to state 80
+
+
+state 39
+
+   82 callstmt: CALL id . '(' paramslist ')'
+
+    '('  shift, and go to state 81
+
+
+state 40
+
+   44 factor: '(' . expressionstart ')'
+
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    '['       shift, and go to state 32
+    '('       shift, and go to state 40
+
+    symbolvalue      go to state 41
+    expressionstart  go to state 82
+    term             go to state 43
+    factor           go to state 44
+
+
+state 41
+
+   45 factor: symbolvalue .
+
+    $default  reduce using rule 45 (factor)
+
+
+state 42
+
+   57 returncmdconf: expressionstart .
+
+    $default  reduce using rule 57 (returncmdconf)
+
+
+state 43
+
+   36 expressionstart: term . expression
+
+    Epsilon  shift, and go to state 83
+    '+'      shift, and go to state 84
+    '-'      shift, and go to state 85
+
+    expression  go to state 86
+
+
+state 44
+
+   40 term: factor . muldiv
+
+    Epsilon  shift, and go to state 87
+    '*'      shift, and go to state 88
+    '/'      shift, and go to state 89
+
+    muldiv  go to state 90
+
+
+state 45
+
+   56 returncmd: RETURN returncmdconf .
+
+    $default  reduce using rule 56 (returncmd)
+
+
+state 46
+
+   58 returncmdconf: callstmt .
+
+    $default  reduce using rule 58 (returncmdconf)
+
+
+state 47
+
+   49 printcmd: PRINT '(' . expressionprint ')'
+
+    CALL      shift, and go to state 9
+    id        shift, and go to state 91
+    constant  shift, and go to state 92
+
+    expressionprint  go to state 93
+    factorprint      go to state 94
+    callstmt         go to state 95
+
+
+state 48
+
+    1 program: START cmds FINISH .
+
+    $default  reduce using rule 1 (program)
+
+
+state 49
+
+    3 cmdsconf: Epsilon .
+
+    $default  reduce using rule 3 (cmdsconf)
+
+
+state 50
+
+    4 cmdsconf: cmds .
+
+    $default  reduce using rule 4 (cmdsconf)
+
+
+state 51
+
+    2 cmds: cmd cmdsconf .
+
+    $default  reduce using rule 2 (cmds)
+
+
+state 52
+
+   16 declaration: id ':' . dtype
+
+    NUMBER  shift, and go to state 96
+    STRING  shift, and go to state 97
+    CHAR    shift, and go to state 98
+    ARRAY   shift, and go to state 99
+
+    dtype      go to state 100
+    primitive  go to state 101
+    arraydecl  go to state 102
+
+
+state 53
+
+   14 declistconf: Epsilon .
+
+    $default  reduce using rule 14 (declistconf)
+
+
+state 54
+
+   15 declistconf: ';' . declist
+
+    id  shift, and go to state 26
+
+    declist      go to state 103
+    declaration  go to state 28
+
+
+state 55
+
+   13 declist: declaration declistconf .
+
+    $default  reduce using rule 13 (declist)
+
+
+state 56
+
+   47 readcmdconf: Epsilon .
+
+    $default  reduce using rule 47 (readcmdconf)
+
+
+state 57
+
+   48 readcmdconf: '[' . symbolvalueconf
+
+    id        shift, and go to state 62
+    constant  shift, and go to state 63
+
+    symbolvalueconf  go to state 104
+
+
+state 58
+
+   46 readcmd: READ id readcmdconf .
+
+    $default  reduce using rule 46 (readcmd)
+
+
+state 59
+
+   32 symbolvalueid: Epsilon .
+
+    $default  reduce using rule 32 (symbolvalueid)
+
+
+state 60
+
+   33 symbolvalueid: '[' . symbolvalueconf
+
+    id        shift, and go to state 62
+    constant  shift, and go to state 63
+
+    symbolvalueconf  go to state 105
+
+
+state 61
+
+   29 symbolvalue: id symbolvalueid .
+
+    $default  reduce using rule 29 (symbolvalue)
+
+
+state 62
+
+   34 symbolvalueconf: id . ']'
+
+    ']'  shift, and go to state 106
+
+
+state 63
+
+   35 symbolvalueconf: constant . ']'
+
+    ']'  shift, and go to state 107
+
+
+state 64
+
+   31 symbolvalue: '[' symbolvalueconf .
+
+    $default  reduce using rule 31 (symbolvalue)
+
+
+state 65
+
+   70 comparisonoperator: "<" .
+
+    $default  reduce using rule 70 (comparisonoperator)
+
+
+state 66
+
+   71 comparisonoperator: ">" .
+
+    $default  reduce using rule 71 (comparisonoperator)
+
+
+state 67
+
+   72 comparisonoperator: "<=" .
+
+    $default  reduce using rule 72 (comparisonoperator)
+
+
+state 68
+
+   73 comparisonoperator: ">=" .
+
+    $default  reduce using rule 73 (comparisonoperator)
+
+
+state 69
+
+   74 comparisonoperator: "===" .
+
+    $default  reduce using rule 74 (comparisonoperator)
+
+
+state 70
+
+   75 comparisonoperator: "!==" .
+
+    $default  reduce using rule 75 (comparisonoperator)
+
+
+state 71
+
+   67 basiccondition: symbolvalue comparisonoperator . basicconditionconf
+
+    UNDEFINED  shift, and go to state 108
+    id         shift, and go to state 30
+    constant   shift, and go to state 31
+    '['        shift, and go to state 32
+
+    symbolvalue         go to state 109
+    basicconditionconf  go to state 110
+
+
+state 72
+
+   63 ifstmt: IF condition STARTIF . cmds FINISHIF
+
+    DEF     shift, and go to state 3
+    READ    shift, and go to state 4
+    IF      shift, and go to state 5
+    ASSIGN  shift, and go to state 6
+    WHILE   shift, and go to state 7
+    PROC    shift, and go to state 8
+    CALL    shift, and go to state 9
+    RETURN  shift, and go to state 10
+    PRINT   shift, and go to state 11
+
+    cmds       go to state 111
+    cmd        go to state 13
+    simplecmd  go to state 14
+    defcmd     go to state 15
+    assigncmd  go to state 16
+    readcmd    go to state 17
+    printcmd   go to state 18
+    returncmd  go to state 19
+    structcmd  go to state 20
+    ifstmt     go to state 21
+    whilestmt  go to state 22
+    procstmt   go to state 23
+    callstmt   go to state 24
+
+
+state 73
+
+   65 conditionconf: Epsilon .
+
+    $default  reduce using rule 65 (conditionconf)
+
+
+state 74
+
+   76 logicaloperator: '&' .
+
+    $default  reduce using rule 76 (logicaloperator)
+
+
+state 75
+
+   77 logicaloperator: '|' .
+
+    $default  reduce using rule 77 (logicaloperator)
+
+
+state 76
+
+   64 condition: basiccondition conditionconf .
+
+    $default  reduce using rule 64 (condition)
+
+
+state 77
+
+   66 conditionconf: logicaloperator . condition
+
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    '['       shift, and go to state 32
+
+    symbolvalue     go to state 33
+    condition       go to state 112
+    basiccondition  go to state 35
+
+
+state 78
+
+   25 assigncmd: ASSIGN id ':' . assigncmdconf
+
+    UNDEFINED  shift, and go to state 113
+    id         shift, and go to state 30
+    constant   shift, and go to state 31
+    '['        shift, and go to state 32
+    '('        shift, and go to state 114
+
+    assigncmdconf  go to state 115
+    symbolvalue    go to state 116
+
+
+state 79
+
+   78 whilestmt: WHILE condition STARTWHILE . cmds FINISHWHILE
+
+    DEF     shift, and go to state 3
+    READ    shift, and go to state 4
+    IF      shift, and go to state 5
+    ASSIGN  shift, and go to state 6
+    WHILE   shift, and go to state 7
+    PROC    shift, and go to state 8
+    CALL    shift, and go to state 9
+    RETURN  shift, and go to state 10
+    PRINT   shift, and go to state 11
+
+    cmds       go to state 117
+    cmd        go to state 13
+    simplecmd  go to state 14
+    defcmd     go to state 15
+    assigncmd  go to state 16
+    readcmd    go to state 17
+    printcmd   go to state 18
+    returncmd  go to state 19
+    structcmd  go to state 20
+    ifstmt     go to state 21
+    whilestmt  go to state 22
+    procstmt   go to state 23
+    callstmt   go to state 24
+
+
+state 80
+
+   79 procstmt: PROC id '(' . procstmtconf
+
+    id   shift, and go to state 26
+    ')'  shift, and go to state 118
+
+    declist       go to state 119
+    declaration   go to state 28
+    procstmtconf  go to state 120
+
+
+state 81
+
+   82 callstmt: CALL id '(' . paramslist ')'
+
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    Epsilon   shift, and go to state 121
+    '['       shift, and go to state 32
+    '('       shift, and go to state 40
+
+    symbolvalue      go to state 41
+    expressionstart  go to state 122
+    term             go to state 43
+    factor           go to state 44
+    paramslist       go to state 123
+
+
+state 82
+
+   44 factor: '(' expressionstart . ')'
+
+    ')'  shift, and go to state 124
+
+
+state 83
+
+   39 expression: Epsilon .
+
+    $default  reduce using rule 39 (expression)
+
+
+state 84
+
+   37 expression: '+' . term expression
+
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    '['       shift, and go to state 32
+    '('       shift, and go to state 40
+
+    symbolvalue  go to state 41
+    term         go to state 125
+    factor       go to state 44
+
+
+state 85
+
+   38 expression: '-' . term expression
+
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    '['       shift, and go to state 32
+    '('       shift, and go to state 40
+
+    symbolvalue  go to state 41
+    term         go to state 126
+    factor       go to state 44
+
+
+state 86
+
+   36 expressionstart: term expression .
+
+    $default  reduce using rule 36 (expressionstart)
+
+
+state 87
+
+   43 muldiv: Epsilon .
+
+    $default  reduce using rule 43 (muldiv)
+
+
+state 88
+
+   41 muldiv: '*' . factor muldiv
+
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    '['       shift, and go to state 32
+    '('       shift, and go to state 40
+
+    symbolvalue  go to state 41
+    factor       go to state 127
+
+
+state 89
+
+   42 muldiv: '/' . factor muldiv
+
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    '['       shift, and go to state 32
+    '('       shift, and go to state 40
+
+    symbolvalue  go to state 41
+    factor       go to state 128
+
+
+state 90
+
+   40 term: factor muldiv .
+
+    $default  reduce using rule 40 (term)
+
+
+state 91
+
+   53 factorprint: id .
+
+    $default  reduce using rule 53 (factorprint)
+
+
+state 92
+
+   54 factorprint: constant .
+
+    $default  reduce using rule 54 (factorprint)
+
+
+state 93
+
+   49 printcmd: PRINT '(' expressionprint . ')'
+
+    ')'  shift, and go to state 129
+
+
+state 94
+
+   50 expressionprint: factorprint . expressionprintconf
+
+    Epsilon  shift, and go to state 130
+    '+'      shift, and go to state 131
+
+    expressionprintconf  go to state 132
+
+
+state 95
+
+   55 factorprint: callstmt .
+
+    $default  reduce using rule 55 (factorprint)
+
+
+state 96
+
+   19 primitive: NUMBER .
+
+    $default  reduce using rule 19 (primitive)
+
+
+state 97
+
+   20 primitive: STRING .
+
+    $default  reduce using rule 20 (primitive)
+
+
+state 98
+
+   21 primitive: CHAR .
+
+    $default  reduce using rule 21 (primitive)
+
+
+state 99
+
+   22 arraydecl: ARRAY . '[' arraydeclconf
+
+    '['  shift, and go to state 133
+
+
+state 100
+
+   16 declaration: id ':' dtype .
+
+    $default  reduce using rule 16 (declaration)
+
+
+state 101
+
+   17 dtype: primitive .
+
+    $default  reduce using rule 17 (dtype)
+
+
+state 102
+
+   18 dtype: arraydecl .
+
+    $default  reduce using rule 18 (dtype)
+
+
+state 103
+
+   15 declistconf: ';' declist .
+
+    $default  reduce using rule 15 (declistconf)
+
+
+state 104
+
+   48 readcmdconf: '[' symbolvalueconf .
+
+    $default  reduce using rule 48 (readcmdconf)
+
+
+state 105
+
+   33 symbolvalueid: '[' symbolvalueconf .
+
+    $default  reduce using rule 33 (symbolvalueid)
+
+
+state 106
+
+   34 symbolvalueconf: id ']' .
+
+    $default  reduce using rule 34 (symbolvalueconf)
+
+
+state 107
+
+   35 symbolvalueconf: constant ']' .
+
+    $default  reduce using rule 35 (symbolvalueconf)
+
+
+state 108
+
+   69 basicconditionconf: UNDEFINED .
+
+    $default  reduce using rule 69 (basicconditionconf)
+
+
+state 109
+
+   68 basicconditionconf: symbolvalue .
+
+    $default  reduce using rule 68 (basicconditionconf)
+
+
+state 110
+
+   67 basiccondition: symbolvalue comparisonoperator basicconditionconf .
+
+    $default  reduce using rule 67 (basiccondition)
+
+
+state 111
+
+   63 ifstmt: IF condition STARTIF cmds . FINISHIF
+
+    FINISHIF  shift, and go to state 134
+
+
+state 112
+
+   66 conditionconf: logicaloperator condition .
+
+    $default  reduce using rule 66 (conditionconf)
+
+
+state 113
+
+   28 assigncmdconf: UNDEFINED .
+
+    $default  reduce using rule 28 (assigncmdconf)
+
+
+state 114
+
+   27 assigncmdconf: '(' . expressionstart ')'
+
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    '['       shift, and go to state 32
+    '('       shift, and go to state 40
+
+    symbolvalue      go to state 41
+    expressionstart  go to state 135
+    term             go to state 43
+    factor           go to state 44
+
+
+state 115
+
+   25 assigncmd: ASSIGN id ':' assigncmdconf .
+
+    $default  reduce using rule 25 (assigncmd)
+
+
+state 116
+
+   26 assigncmdconf: symbolvalue .
+
+    $default  reduce using rule 26 (assigncmdconf)
+
+
+state 117
+
+   78 whilestmt: WHILE condition STARTWHILE cmds . FINISHWHILE
+
+    FINISHWHILE  shift, and go to state 136
+
+
+state 118
+
+   80 procstmtconf: ')' . STARTPROC cmds FINISHPROC
+
+    STARTPROC  shift, and go to state 137
+
+
+state 119
+
+   81 procstmtconf: declist . ')' STARTPROC cmds FINISHPROC
+
+    ')'  shift, and go to state 138
+
+
+state 120
+
+   79 procstmt: PROC id '(' procstmtconf .
+
+    $default  reduce using rule 79 (procstmt)
+
+
+state 121
+
+   84 paramslist: Epsilon .
+
+    $default  reduce using rule 84 (paramslist)
+
+
+state 122
+
+   83 paramslist: expressionstart . paramslistconf
+
+    Epsilon  shift, and go to state 139
+    ','      shift, and go to state 140
+
+    paramslistconf  go to state 141
+
+
+state 123
+
+   82 callstmt: CALL id '(' paramslist . ')'
+
+    ')'  shift, and go to state 142
+
+
+state 124
+
+   44 factor: '(' expressionstart ')' .
+
+    $default  reduce using rule 44 (factor)
+
+
+state 125
+
+   37 expression: '+' term . expression
+
+    Epsilon  shift, and go to state 83
+    '+'      shift, and go to state 84
+    '-'      shift, and go to state 85
+
+    expression  go to state 143
+
+
+state 126
+
+   38 expression: '-' term . expression
+
+    Epsilon  shift, and go to state 83
+    '+'      shift, and go to state 84
+    '-'      shift, and go to state 85
+
+    expression  go to state 144
+
+
+state 127
+
+   41 muldiv: '*' factor . muldiv
+
+    Epsilon  shift, and go to state 87
+    '*'      shift, and go to state 88
+    '/'      shift, and go to state 89
+
+    muldiv  go to state 145
+
+
+state 128
+
+   42 muldiv: '/' factor . muldiv
+
+    Epsilon  shift, and go to state 87
+    '*'      shift, and go to state 88
+    '/'      shift, and go to state 89
+
+    muldiv  go to state 146
+
+
+state 129
+
+   49 printcmd: PRINT '(' expressionprint ')' .
+
+    $default  reduce using rule 49 (printcmd)
+
+
+state 130
+
+   51 expressionprintconf: Epsilon .
+
+    $default  reduce using rule 51 (expressionprintconf)
+
+
+state 131
+
+   52 expressionprintconf: '+' . expressionprint
+
+    CALL      shift, and go to state 9
+    id        shift, and go to state 91
+    constant  shift, and go to state 92
+
+    expressionprint  go to state 147
+    factorprint      go to state 94
+    callstmt         go to state 95
+
+
+state 132
+
+   50 expressionprint: factorprint expressionprintconf .
+
+    $default  reduce using rule 50 (expressionprint)
+
+
+state 133
+
+   22 arraydecl: ARRAY '[' . arraydeclconf
+
+    id        shift, and go to state 148
+    constant  shift, and go to state 149
+
+    arraydeclconf  go to state 150
+
+
+state 134
+
+   63 ifstmt: IF condition STARTIF cmds FINISHIF .
+
+    $default  reduce using rule 63 (ifstmt)
+
+
+state 135
+
+   27 assigncmdconf: '(' expressionstart . ')'
+
+    ')'  shift, and go to state 151
+
+
+state 136
+
+   78 whilestmt: WHILE condition STARTWHILE cmds FINISHWHILE .
+
+    $default  reduce using rule 78 (whilestmt)
+
+
+state 137
+
+   80 procstmtconf: ')' STARTPROC . cmds FINISHPROC
+
+    DEF     shift, and go to state 3
+    READ    shift, and go to state 4
+    IF      shift, and go to state 5
+    ASSIGN  shift, and go to state 6
+    WHILE   shift, and go to state 7
+    PROC    shift, and go to state 8
+    CALL    shift, and go to state 9
+    RETURN  shift, and go to state 10
+    PRINT   shift, and go to state 11
+
+    cmds       go to state 152
+    cmd        go to state 13
+    simplecmd  go to state 14
+    defcmd     go to state 15
+    assigncmd  go to state 16
+    readcmd    go to state 17
+    printcmd   go to state 18
+    returncmd  go to state 19
+    structcmd  go to state 20
+    ifstmt     go to state 21
+    whilestmt  go to state 22
+    procstmt   go to state 23
+    callstmt   go to state 24
+
+
+state 138
+
+   81 procstmtconf: declist ')' . STARTPROC cmds FINISHPROC
+
+    STARTPROC  shift, and go to state 153
+
+
+state 139
+
+   85 paramslistconf: Epsilon .
+
+    $default  reduce using rule 85 (paramslistconf)
+
+
+state 140
+
+   86 paramslistconf: ',' . paramslist
+
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    Epsilon   shift, and go to state 121
+    '['       shift, and go to state 32
+    '('       shift, and go to state 40
+
+    symbolvalue      go to state 41
+    expressionstart  go to state 122
+    term             go to state 43
+    factor           go to state 44
+    paramslist       go to state 154
+
+
+state 141
+
+   83 paramslist: expressionstart paramslistconf .
+
+    $default  reduce using rule 83 (paramslist)
+
+
+state 142
+
+   82 callstmt: CALL id '(' paramslist ')' .
+
+    $default  reduce using rule 82 (callstmt)
+
+
+state 143
+
+   37 expression: '+' term expression .
+
+    $default  reduce using rule 37 (expression)
+
+
+state 144
+
+   38 expression: '-' term expression .
+
+    $default  reduce using rule 38 (expression)
+
+
+state 145
+
+   41 muldiv: '*' factor muldiv .
+
+    $default  reduce using rule 41 (muldiv)
+
+
+state 146
+
+   42 muldiv: '/' factor muldiv .
+
+    $default  reduce using rule 42 (muldiv)
+
+
+state 147
+
+   52 expressionprintconf: '+' expressionprint .
+
+    $default  reduce using rule 52 (expressionprintconf)
+
+
+state 148
+
+   24 arraydeclconf: id . ']' OF primitive
+
+    ']'  shift, and go to state 155
+
+
+state 149
+
+   23 arraydeclconf: constant . ']' OF primitive
+
+    ']'  shift, and go to state 156
+
+
+state 150
+
+   22 arraydecl: ARRAY '[' arraydeclconf .
+
+    $default  reduce using rule 22 (arraydecl)
+
+
+state 151
+
+   27 assigncmdconf: '(' expressionstart ')' .
+
+    $default  reduce using rule 27 (assigncmdconf)
+
+
+state 152
+
+   80 procstmtconf: ')' STARTPROC cmds . FINISHPROC
+
+    FINISHPROC  shift, and go to state 157
+
+
+state 153
+
+   81 procstmtconf: declist ')' STARTPROC . cmds FINISHPROC
+
+    DEF     shift, and go to state 3
+    READ    shift, and go to state 4
+    IF      shift, and go to state 5
+    ASSIGN  shift, and go to state 6
+    WHILE   shift, and go to state 7
+    PROC    shift, and go to state 8
+    CALL    shift, and go to state 9
+    RETURN  shift, and go to state 10
+    PRINT   shift, and go to state 11
+
+    cmds       go to state 158
+    cmd        go to state 13
+    simplecmd  go to state 14
+    defcmd     go to state 15
+    assigncmd  go to state 16
+    readcmd    go to state 17
+    printcmd   go to state 18
+    returncmd  go to state 19
+    structcmd  go to state 20
+    ifstmt     go to state 21
+    whilestmt  go to state 22
+    procstmt   go to state 23
+    callstmt   go to state 24
+
+
+state 154
+
+   86 paramslistconf: ',' paramslist .
+
+    $default  reduce using rule 86 (paramslistconf)
+
+
+state 155
+
+   24 arraydeclconf: id ']' . OF primitive
+
+    OF  shift, and go to state 159
+
+
+state 156
+
+   23 arraydeclconf: constant ']' . OF primitive
+
+    OF  shift, and go to state 160
+
+
+state 157
+
+   80 procstmtconf: ')' STARTPROC cmds FINISHPROC .
+
+    $default  reduce using rule 80 (procstmtconf)
+
+
+state 158
+
+   81 procstmtconf: declist ')' STARTPROC cmds . FINISHPROC
+
+    FINISHPROC  shift, and go to state 161
+
+
+state 159
+
+   24 arraydeclconf: id ']' OF . primitive
+
+    NUMBER  shift, and go to state 96
+    STRING  shift, and go to state 97
+    CHAR    shift, and go to state 98
+
+    primitive  go to state 162
+
+
+state 160
+
+   23 arraydeclconf: constant ']' OF . primitive
+
+    NUMBER  shift, and go to state 96
+    STRING  shift, and go to state 97
+    CHAR    shift, and go to state 98
+
+    primitive  go to state 163
+
+
+state 161
+
+   81 procstmtconf: declist ')' STARTPROC cmds FINISHPROC .
+
+    $default  reduce using rule 81 (procstmtconf)
+
+
+state 162
+
+   24 arraydeclconf: id ']' OF primitive .
+
+    $default  reduce using rule 24 (arraydeclconf)
+
+
+state 163
+
+   23 arraydeclconf: constant ']' OF primitive .
+
+    $default  reduce using rule 23 (arraydeclconf)
