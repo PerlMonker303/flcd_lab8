@@ -1,0 +1,48 @@
+/*** Definition Section has one variable
+which can be accessed inside yylex() 
+and main() ***/
+%{
+int count = 0;
+%}
+
+DIGIT 		[0-9] 
+NON_ZERO_DIGIT [1-9]
+LETTER      [A-Za-z]
+ID 		[A-Z][A-Z0-9]*
+ZERO          0
+CHARACTER [A-Za-z0-9 ]
+
+%%
+
+"-"{NON_ZERO_DIGIT}+    printf( "%s negative integer\n", yytext );
+
+"-"0+             printf("Error: negative zero digit %s\n", yytext);
+
+{DIGIT}+{LETTER}  printf("Error: %s is not a valid constant\n", yytext);
+
+{DIGIT}+ 	      printf( "%s integer\n", yytext );
+
+"'"{LETTER}"'"|"'"{DIGIT}"'" printf( "%s const character\n", yytext );
+
+\"{CHARACTER}+\"  printf( "%s string\n", yytext );
+
+"START"|"FINISH"|"DEF"|"NUMBER"|"STRING"|"CHAR"|"ARRAY"|"OF"|"UNDEFINED"|"READ"|"IF"|"STARTIF"|"FINISHIF"|"ASSIGN"|"WHILE"|"STARTWHILE"|"FINISHWHILE"|"PROC"|"STARTPROC"|"FINISHPROC"|"CALL"|"RETURN"|"PRINT"  printf( "%s keyword\n", yytext );
+
+{ID} 		      printf( "%s identifier\n", yytext );
+
+"+"|"-"|"*"|"/"|"<"|"<="|"==="|"!=="|">="|">"|"||"|"&&" printf( "%s operator\n", yytext );
+
+";"|","|":"|"["|"]"|"("|")" printf( "%s separator\n", yytext );
+
+[ \t\n]+ 		/* eat up whitespace or new lines */
+		 
+.  printf("Error\n");
+%%
+  
+int yywrap(){}
+int main(){
+  
+yylex();
+  
+return 0;
+}
