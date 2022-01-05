@@ -2,7 +2,7 @@
 which can be accessed inside yylex() 
 and main() ***/
 %{
-int count = 0;
+# include "grammar.tab.h"
 %}
 
 DIGIT 		[0-9] 
@@ -14,27 +14,57 @@ CHARACTER [A-Za-z0-9 ]
 
 %%
 
-"-"{NON_ZERO_DIGIT}+    printf( "%s negative integer\n", yytext );
+("-"|"+")0+             {return NEGPOSDIGIT;}
 
-"-"0+             printf("Error: negative zero digit %s\n", yytext);
+{DIGIT}+{LETTER}+({DIGIT}|{LETTER})*  {return ERRORNUMCONST;}
 
-{DIGIT}+{LETTER}  printf("Error: %s is not a valid constant\n", yytext);
+["-"]{NON_ZERO_DIGIT}{DIGIT}*	      {return NUMBER;}
 
-{DIGIT}+ 	      printf( "%s integer\n", yytext );
+"'"{LETTER}"'"|"'"{DIGIT}"'" {return CHAR;}
 
-"'"{LETTER}"'"|"'"{DIGIT}"'" printf( "%s const character\n", yytext );
+\"{CHARACTER}+\"  {return STRING;}
 
-\"{CHARACTER}+\"  printf( "%s string\n", yytext );
+"START" {return START;}
+"FINISH" {return FINISH;}
+"DEF" {return DEF;}
+"NUMBER" {return NUMBER;}
+"STRING" {return STRING;}
+"CHAR" {return CHAR;}
+"ARRAY" {return ARRAY;}
+"OF" {return OF;}
+"UNDEFINED" {return UNDEFINED;}
+"READ" {return READ;}
+"IF" {return IF;}
+"STARTIF" {return STARTIF;}
+"FINISHIF" {return FINISHIF;}
+"ASSIGN" {return ASSIGN;}
+"WHILE" {return WHILE;}
+"STARTWHILE" {return STARTWHILE;}
+"FINISHWHILE" {return FINISHWHILE;}
+"PROC" {return PROC;}
+"STARTPROC" {return STARTPROC;}
+"FINISHPROC" {return FINISHPROC;}
+"CALL" {return CALL;}
+"RETURN" {return RETURN;}
+"PRINT"  {return PRINT;}
 
-"START"|"FINISH"|"DEF"|"NUMBER"|"STRING"|"CHAR"|"ARRAY"|"OF"|"UNDEFINED"|"READ"|"IF"|"STARTIF"|"FINISHIF"|"ASSIGN"|"WHILE"|"STARTWHILE"|"FINISHWHILE"|"PROC"|"STARTPROC"|"FINISHPROC"|"CALL"|"RETURN"|"PRINT"  printf( "%s keyword\n", yytext );
+{ID} 		      {return id;}
 
-{ID} 		      printf( "%s identifier\n", yytext );
+"+"|"-"|"*"|"/"|"<"|"<="|"==="|"!=="|">="|">"|"||"|"&&" {return OPERATOR;}
 
-"+"|"-"|"*"|"/"|"<"|"<="|"==="|"!=="|">="|">"|"||"|"&&" printf( "%s operator\n", yytext );
+";"|","|":"|"["|"]"|"("|")" {return SEPARATOR;}
 
-";"|","|":"|"["|"]"|"("|")" printf( "%s separator\n", yytext );
-
-[ \t\n]+ 		/* eat up whitespace or new lines */
+[ \t\n]+ {return SPACE;}		/* eat up whitespace or new lines */
 		 
 .  printf("Error\n");
 %%
+/*
+int yywrap(){}
+
+int main(){
+
+yylex();
+
+return 0;
+}
+*/

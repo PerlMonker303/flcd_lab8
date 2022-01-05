@@ -1,56 +1,39 @@
 %{
 #include <stdio.h>
-#include <stdlib.h>
-#define YYDEBUG 1
-
-#define TIP_INT 1
-#define TIP_REAL 2
-#define TIP_CAR 3
-
-double stiva[20];
-int sp;
-
-void push(double x)
-{ stiva[sp++]=x; }
-
-double pop()
-{ return stiva[--sp]; }
-
-extern int yylex(void);
-
 %}
 
-%union {
-  	int l_val;
-	char *p_val;
-}
-
-%token START 
-%token FINISH 
-%token DEF 
-%token NUMBER 
-%token STRING 
-%token CHAR 
-%token ARRAY 
-%token OF 
-%token UNDEFINED 
-%token READ 
-%token IF 
-%token STARTIF 
-%token FINISHIF 
-%token ASSIGN 
-%token WHILE 
-%token STARTWHILE 
-%token FINISHWHILE 
-%token PROC 
-%token STARTPROC 
-%token FINISHPROC 
+%token START
+%token FINISH
+%token DEF
+%token NUMBER
+%token STRING
+%token CHAR
+%token ARRAY
+%token OF
+%token UNDEFINED
+%token READ
+%token IF
+%token STARTIF
+%token FINISHIF
+%token ASSIGN
+%token WHILE
+%token STARTWHILE
+%token FINISHWHILE
+%token PROC
+%token STARTPROC
+%token FINISHPROC
 %token CALL 
 %token RETURN 
 %token PRINT
 %token id
 %token constant
 %token Epsilon
+
+%token NEGPOSDIGIT
+%token ERRORNUMCONST
+%token OPERATOR
+%token SEPARATOR
+%token SPACE
 
 %%
 program: START cmds FINISH
@@ -166,8 +149,8 @@ comparisonoperator: "<"
 		| "==="
 		| "!=="
 		;
-logicaloperator: '&&'
-		| '||'
+logicaloperator: "&&"
+		| "||"
 		;
 whilestmt: WHILE condition STARTWHILE cmds FINISHWHILE
 		;
@@ -185,20 +168,12 @@ paramslistconf: Epsilon
 		| ',' paramslist
 		;
 %%
-
-extern int yylex(void);
-
-yyerror(char *s)
+int main(int argc, char **argv)
 {
-  printf("%s\n", s);
+  yyparse();
 }
 
-extern FILE *yyin;
-
-main(int argc, char **argv)
+int yyerror(char *s)
 {
-  if(argc>1) yyin = fopen(argv[1], "r");
-  if((argc>2)&&(!strcmp(argv[2],"-d"))) yydebug = 1;
-  if(!yyparse()) fprintf(stderr,"\tO.K.\n");
+  fprintf(stderr, "error: %s\n", s);
 }
-
