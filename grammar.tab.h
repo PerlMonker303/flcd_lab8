@@ -96,7 +96,21 @@ extern int yydebug;
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+
+union YYSTYPE
+{
+#line 21 "grammar.y" /* yacc.c:1909  */
+
+	char varname[26];
+	struct attributes
+	{
+		char varn[20];
+	} attrib;
+
+#line 111 "grammar.tab.h" /* yacc.c:1909  */
+};
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif

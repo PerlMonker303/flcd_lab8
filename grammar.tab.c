@@ -64,12 +64,16 @@
 /* Copy the first part of user declarations.  */
 #line 1 "grammar.y" /* yacc.c:339  */
 
-#include <stdio.h>
-extern FILE *yyin;
-extern char *yytext;
-extern int yylineno;
+	#include <stdio.h>
+	#include <string.h>
+	extern FILE *yyin;
+	extern char *yytext;
+	extern int yylineno;
 
-#line 73 "grammar.tab.c" /* yacc.c:339  */
+	char stringOfProd[1000][3];
+	int c = 0;
+
+#line 77 "grammar.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -155,7 +159,21 @@ extern int yydebug;
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+
+union YYSTYPE
+{
+#line 21 "grammar.y" /* yacc.c:355  */
+
+	char varname[26];
+	struct attributes
+	{
+		char varn[20];
+	} attrib;
+
+#line 174 "grammar.tab.c" /* yacc.c:355  */
+};
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
@@ -169,7 +187,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 173 "grammar.tab.c" /* yacc.c:358  */
+#line 191 "grammar.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -471,15 +489,15 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    18,    18,    20,    22,    23,    25,    26,    28,    29,
-      30,    31,    32,    34,    36,    38,    39,    41,    43,    44,
-      46,    47,    48,    50,    52,    53,    55,    57,    58,    59,
-      61,    62,    63,    65,    66,    68,    69,    71,    73,    74,
-      75,    77,    79,    80,    81,    83,    84,    86,    88,    89,
-      91,    93,    95,    96,    98,    99,   100,   102,   104,   105,
-     107,   108,   109,   110,   112,   114,   116,   117,   119,   121,
-     122,   124,   125,   126,   127,   128,   129,   131,   132,   134,
-     136,   138,   139,   141,   143,   144,   146,   147
+       0,    30,    30,    32,    34,    35,    37,    38,    40,    41,
+      42,    43,    44,    46,    48,    50,    51,    53,    55,    56,
+      58,    59,    60,    62,    64,    65,    67,    69,    70,    71,
+      73,    74,    75,    77,    78,    80,    81,    83,    85,    86,
+      87,    89,    91,    92,    93,    95,    96,    98,   100,   101,
+     103,   105,   107,   108,   110,   111,   112,   114,   116,   117,
+     119,   120,   121,   122,   124,   126,   128,   129,   131,   133,
+     134,   136,   137,   138,   139,   140,   141,   143,   144,   146,
+     148,   150,   151,   153,   155,   156,   158,   159
 };
 #endif
 
@@ -1359,8 +1377,524 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-      
-#line 1364 "grammar.tab.c" /* yacc.c:1646  */
+        case 2:
+#line 30 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="0\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1384 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 3:
+#line 32 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="1\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1390 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 4:
+#line 34 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="2\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1396 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 5:
+#line 35 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="3\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1402 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 6:
+#line 37 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="4\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1408 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 7:
+#line 38 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="5\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1414 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 8:
+#line 40 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="6\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1420 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 9:
+#line 41 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="7\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1426 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 10:
+#line 42 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="8\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1432 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 11:
+#line 43 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="9\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1438 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 12:
+#line 44 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="10\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1444 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 13:
+#line 46 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="11\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1450 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 14:
+#line 48 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="12\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1456 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 15:
+#line 50 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="13\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1462 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 16:
+#line 51 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="14\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1468 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 17:
+#line 53 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="15\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1474 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 18:
+#line 55 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="16\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1480 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 19:
+#line 56 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="17\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1486 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 20:
+#line 58 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="18\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1492 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 21:
+#line 59 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="19\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1498 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 22:
+#line 60 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="20\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1504 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 23:
+#line 62 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="21\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1510 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 24:
+#line 64 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="22\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1516 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 25:
+#line 65 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="23\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1522 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 26:
+#line 67 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="24\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1528 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 27:
+#line 69 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="25\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1534 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 28:
+#line 70 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="26\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1540 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 29:
+#line 71 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="27\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1546 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 30:
+#line 73 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="28\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1552 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 31:
+#line 74 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="29\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1558 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 32:
+#line 75 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="30\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1564 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 33:
+#line 77 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="31\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1570 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 34:
+#line 78 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="32\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1576 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 35:
+#line 80 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="33\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1582 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 36:
+#line 81 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="34\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1588 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 37:
+#line 83 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="35\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1594 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 38:
+#line 85 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="36\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1600 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 39:
+#line 86 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="37\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1606 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 40:
+#line 87 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="38\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1612 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 41:
+#line 89 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="39\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1618 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 42:
+#line 91 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="40\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1624 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 43:
+#line 92 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="41\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1630 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 44:
+#line 93 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="42\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1636 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 45:
+#line 95 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="43\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1642 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 46:
+#line 96 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="44\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1648 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 47:
+#line 98 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="45\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1654 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 48:
+#line 100 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="46\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1660 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 49:
+#line 101 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="47\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1666 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 50:
+#line 103 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="48\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1672 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 51:
+#line 105 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="49\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1678 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 52:
+#line 107 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="50\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1684 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 53:
+#line 108 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="51\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1690 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 54:
+#line 110 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="52\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1696 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 55:
+#line 111 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="53\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1702 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 56:
+#line 112 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="54\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1708 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 57:
+#line 114 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="55\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1714 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 58:
+#line 116 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="56\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1720 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 59:
+#line 117 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="57\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1726 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 60:
+#line 119 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="58\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1732 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 61:
+#line 120 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="59\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1738 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 62:
+#line 121 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="60\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1744 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 63:
+#line 122 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="61\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1750 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 64:
+#line 124 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="62\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1756 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 65:
+#line 126 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="63\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1762 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 66:
+#line 128 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="64\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1768 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 67:
+#line 129 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="65\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1774 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 68:
+#line 131 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="66\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1780 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 69:
+#line 133 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="67\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1786 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 70:
+#line 134 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="68\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1792 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 71:
+#line 136 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="69\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1798 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 72:
+#line 137 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="70\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1804 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 73:
+#line 138 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="71\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1810 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 74:
+#line 139 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="72\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1816 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 75:
+#line 140 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="73\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1822 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 76:
+#line 141 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="74\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1828 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 77:
+#line 143 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="75\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1834 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 78:
+#line 144 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="76\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1840 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 79:
+#line 146 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="77\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1846 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 80:
+#line 148 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="78\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1852 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 81:
+#line 150 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="79\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1858 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 82:
+#line 151 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="80\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1864 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 83:
+#line 153 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="81\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1870 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 84:
+#line 155 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="82\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1876 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 85:
+#line 156 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="83\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1882 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 86:
+#line 158 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="84\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1888 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 87:
+#line 159 "grammar.y" /* yacc.c:1646  */
+    { char t[3]="85\0";strcpy(stringOfProd[c],t);c+=1;}
+#line 1894 "grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+
+#line 1898 "grammar.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1588,7 +2122,8 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 149 "grammar.y" /* yacc.c:1906  */
+#line 161 "grammar.y" /* yacc.c:1906  */
+
 
 int main(int argc, char **argv)
 {
@@ -1602,8 +2137,23 @@ int main(int argc, char **argv)
   	if(0==yyparse()) printf("Result yyparse OK");
 }
 
+void reverseString(){
+	char aux[3];
+	for(int i=0;i<c / 2;i++){
+		strcpy(aux, stringOfProd[i]);
+		strcpy(stringOfProd[i], stringOfProd[c-i-1]);
+		strcpy(stringOfProd[c-i-1], aux);
+	}
+}
+
 int yyerror(char *s)
 {
+	printf("String of productions: \n");
+	reverseString(stringOfProd);
+	for(int i=0;i<c;i++){
+		printf("%s ", stringOfProd[i]);
+	}
+	printf("\n");
     printf("Error on line #%d\n", yylineno);
     printf("Unexpected token: '%s'\n", yytext);
     return 0;

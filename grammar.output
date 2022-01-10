@@ -1,0 +1,1722 @@
+Terminals unused in grammar
+
+   NEGPOSDIGIT
+   ERRORNUMCONST
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: START cmds FINISH
+
+    2 cmds: cmd cmdsconf
+
+    3 cmdsconf: %empty
+    4         | cmds
+
+    5 cmd: simplecmd
+    6    | structcmd
+
+    7 simplecmd: defcmd
+    8          | assigncmd
+    9          | readcmd
+   10          | printcmd
+   11          | returncmd
+
+   12 defcmd: DEF declist
+
+   13 declist: declaration declistconf
+
+   14 declistconf: %empty
+   15            | SEP_SEMICOL declist
+
+   16 declaration: id SEP_COL dtype
+
+   17 dtype: primitive
+   18      | arraydecl
+
+   19 primitive: NUMBER
+   20          | STRING
+   21          | CHAR
+
+   22 arraydecl: ARRAY SEP_SQBR arraydeclconf
+
+   23 arraydeclconf: constant SEP_SQBREND OF primitive
+   24              | id SEP_SQBREND OF primitive
+
+   25 assigncmd: ASSIGN id SEP_COL assigncmdconf
+
+   26 assigncmdconf: symbolvalue
+   27              | SEP_RBR expressionstart SEP_RBREND
+   28              | UNDEFINED
+
+   29 symbolvalue: id symbolvalueid
+   30            | constant
+   31            | SEP_SQBR symbolvalueconf
+
+   32 symbolvalueid: %empty
+   33              | SEP_SQBR symbolvalueconf
+
+   34 symbolvalueconf: id SEP_SQBREND
+   35                | constant SEP_SQBREND
+
+   36 expressionstart: term expression
+
+   37 expression: OP_PLUS term expression
+   38           | OP_MINUS term expression
+   39           | %empty
+
+   40 term: factor muldiv
+
+   41 muldiv: OP_MUL factor muldiv
+   42       | OP_DIV factor muldiv
+   43       | %empty
+
+   44 factor: SEP_RBR expressionstart SEP_RBREND
+   45       | symbolvalue
+
+   46 readcmd: READ id readcmdconf
+
+   47 readcmdconf: %empty
+   48            | SEP_SQBR symbolvalueconf
+
+   49 printcmd: PRINT SEP_RBR expressionprint SEP_RBREND
+
+   50 expressionprint: factorprint expressionprintconf
+
+   51 expressionprintconf: %empty
+   52                    | OP_PLUS expressionprint
+
+   53 factorprint: id
+   54            | constant
+   55            | callstmt
+
+   56 returncmd: RETURN returncmdconf
+
+   57 returncmdconf: expressionstart
+   58              | callstmt
+
+   59 structcmd: ifstmt
+   60          | whilestmt
+   61          | procstmt
+   62          | callstmt
+
+   63 ifstmt: IF condition STARTIF cmds FINISHIF
+
+   64 condition: basiccondition conditionconf
+
+   65 conditionconf: %empty
+   66              | logicaloperator condition
+
+   67 basiccondition: symbolvalue comparisonoperator basicconditionconf
+
+   68 basicconditionconf: symbolvalue
+   69                   | UNDEFINED
+
+   70 comparisonoperator: OP_LT
+   71                   | OP_RT
+   72                   | OP_LTE
+   73                   | OP_RTE
+   74                   | OP_EQ
+   75                   | OP_NEQ
+
+   76 logicaloperator: OP_AND
+   77                | OP_OR
+
+   78 whilestmt: WHILE condition STARTWHILE cmds FINISHWHILE
+
+   79 procstmt: PROC id SEP_RBR procstmtconf
+
+   80 procstmtconf: SEP_RBREND STARTPROC cmds FINISHPROC
+   81             | declist SEP_RBREND STARTPROC cmds FINISHPROC
+
+   82 callstmt: CALL id SEP_RBR paramslist SEP_RBREND
+
+   83 paramslist: expressionstart paramslistconf
+   84           | %empty
+
+   85 paramslistconf: %empty
+   86               | SEP_COM paramslist
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+START (258) 1
+FINISH (259) 1
+DEF (260) 12
+NUMBER (261) 19
+STRING (262) 20
+CHAR (263) 21
+ARRAY (264) 22
+OF (265) 23 24
+UNDEFINED (266) 28 69
+READ (267) 46
+IF (268) 63
+STARTIF (269) 63
+FINISHIF (270) 63
+ASSIGN (271) 25
+WHILE (272) 78
+STARTWHILE (273) 78
+FINISHWHILE (274) 78
+PROC (275) 79
+STARTPROC (276) 80 81
+FINISHPROC (277) 80 81
+CALL (278) 82
+RETURN (279) 56
+PRINT (280) 49
+id (281) 16 24 25 29 34 46 53 79 82
+constant (282) 23 30 35 54
+NEGPOSDIGIT (283)
+ERRORNUMCONST (284)
+OP_PLUS (285) 37 52
+OP_MINUS (286) 38
+OP_MUL (287) 41
+OP_DIV (288) 42
+OP_LT (289) 70
+OP_LTE (290) 72
+OP_EQ (291) 74
+OP_NEQ (292) 75
+OP_RT (293) 71
+OP_RTE (294) 73
+OP_OR (295) 77
+OP_AND (296) 76
+SEP_SEMICOL (297) 15
+SEP_COM (298) 86
+SEP_COL (299) 16 25
+SEP_SQBR (300) 22 31 33 48
+SEP_SQBREND (301) 23 24 34 35
+SEP_RBR (302) 27 44 49 79 82
+SEP_RBREND (303) 27 44 49 80 81 82
+
+
+Nonterminals, with rules where they appear
+
+$accept (49)
+    on left: 0
+program (50)
+    on left: 1, on right: 0
+cmds (51)
+    on left: 2, on right: 1 4 63 78 80 81
+cmdsconf (52)
+    on left: 3 4, on right: 2
+cmd (53)
+    on left: 5 6, on right: 2
+simplecmd (54)
+    on left: 7 8 9 10 11, on right: 5
+defcmd (55)
+    on left: 12, on right: 7
+declist (56)
+    on left: 13, on right: 12 15 81
+declistconf (57)
+    on left: 14 15, on right: 13
+declaration (58)
+    on left: 16, on right: 13
+dtype (59)
+    on left: 17 18, on right: 16
+primitive (60)
+    on left: 19 20 21, on right: 17 23 24
+arraydecl (61)
+    on left: 22, on right: 18
+arraydeclconf (62)
+    on left: 23 24, on right: 22
+assigncmd (63)
+    on left: 25, on right: 8
+assigncmdconf (64)
+    on left: 26 27 28, on right: 25
+symbolvalue (65)
+    on left: 29 30 31, on right: 26 45 67 68
+symbolvalueid (66)
+    on left: 32 33, on right: 29
+symbolvalueconf (67)
+    on left: 34 35, on right: 31 33 48
+expressionstart (68)
+    on left: 36, on right: 27 44 57 83
+expression (69)
+    on left: 37 38 39, on right: 36 37 38
+term (70)
+    on left: 40, on right: 36 37 38
+muldiv (71)
+    on left: 41 42 43, on right: 40 41 42
+factor (72)
+    on left: 44 45, on right: 40 41 42
+readcmd (73)
+    on left: 46, on right: 9
+readcmdconf (74)
+    on left: 47 48, on right: 46
+printcmd (75)
+    on left: 49, on right: 10
+expressionprint (76)
+    on left: 50, on right: 49 52
+expressionprintconf (77)
+    on left: 51 52, on right: 50
+factorprint (78)
+    on left: 53 54 55, on right: 50
+returncmd (79)
+    on left: 56, on right: 11
+returncmdconf (80)
+    on left: 57 58, on right: 56
+structcmd (81)
+    on left: 59 60 61 62, on right: 6
+ifstmt (82)
+    on left: 63, on right: 59
+condition (83)
+    on left: 64, on right: 63 66 78
+conditionconf (84)
+    on left: 65 66, on right: 64
+basiccondition (85)
+    on left: 67, on right: 64
+basicconditionconf (86)
+    on left: 68 69, on right: 67
+comparisonoperator (87)
+    on left: 70 71 72 73 74 75, on right: 67
+logicaloperator (88)
+    on left: 76 77, on right: 66
+whilestmt (89)
+    on left: 78, on right: 60
+procstmt (90)
+    on left: 79, on right: 61
+procstmtconf (91)
+    on left: 80 81, on right: 79
+callstmt (92)
+    on left: 82, on right: 55 58 62
+paramslist (93)
+    on left: 83 84, on right: 82 86
+paramslistconf (94)
+    on left: 85 86, on right: 83
+
+
+State 0
+
+    0 $accept: . program $end
+
+    START  shift, and go to state 1
+
+    program  go to state 2
+
+
+State 1
+
+    1 program: START . cmds FINISH
+
+    DEF     shift, and go to state 3
+    READ    shift, and go to state 4
+    IF      shift, and go to state 5
+    ASSIGN  shift, and go to state 6
+    WHILE   shift, and go to state 7
+    PROC    shift, and go to state 8
+    CALL    shift, and go to state 9
+    RETURN  shift, and go to state 10
+    PRINT   shift, and go to state 11
+
+    cmds       go to state 12
+    cmd        go to state 13
+    simplecmd  go to state 14
+    defcmd     go to state 15
+    assigncmd  go to state 16
+    readcmd    go to state 17
+    printcmd   go to state 18
+    returncmd  go to state 19
+    structcmd  go to state 20
+    ifstmt     go to state 21
+    whilestmt  go to state 22
+    procstmt   go to state 23
+    callstmt   go to state 24
+
+
+State 2
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 25
+
+
+State 3
+
+   12 defcmd: DEF . declist
+
+    id  shift, and go to state 26
+
+    declist      go to state 27
+    declaration  go to state 28
+
+
+State 4
+
+   46 readcmd: READ . id readcmdconf
+
+    id  shift, and go to state 29
+
+
+State 5
+
+   63 ifstmt: IF . condition STARTIF cmds FINISHIF
+
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    SEP_SQBR  shift, and go to state 32
+
+    symbolvalue     go to state 33
+    condition       go to state 34
+    basiccondition  go to state 35
+
+
+State 6
+
+   25 assigncmd: ASSIGN . id SEP_COL assigncmdconf
+
+    id  shift, and go to state 36
+
+
+State 7
+
+   78 whilestmt: WHILE . condition STARTWHILE cmds FINISHWHILE
+
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    SEP_SQBR  shift, and go to state 32
+
+    symbolvalue     go to state 33
+    condition       go to state 37
+    basiccondition  go to state 35
+
+
+State 8
+
+   79 procstmt: PROC . id SEP_RBR procstmtconf
+
+    id  shift, and go to state 38
+
+
+State 9
+
+   82 callstmt: CALL . id SEP_RBR paramslist SEP_RBREND
+
+    id  shift, and go to state 39
+
+
+State 10
+
+   56 returncmd: RETURN . returncmdconf
+
+    CALL      shift, and go to state 9
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    SEP_SQBR  shift, and go to state 32
+    SEP_RBR   shift, and go to state 40
+
+    symbolvalue      go to state 41
+    expressionstart  go to state 42
+    term             go to state 43
+    factor           go to state 44
+    returncmdconf    go to state 45
+    callstmt         go to state 46
+
+
+State 11
+
+   49 printcmd: PRINT . SEP_RBR expressionprint SEP_RBREND
+
+    SEP_RBR  shift, and go to state 47
+
+
+State 12
+
+    1 program: START cmds . FINISH
+
+    FINISH  shift, and go to state 48
+
+
+State 13
+
+    2 cmds: cmd . cmdsconf
+
+    DEF     shift, and go to state 3
+    READ    shift, and go to state 4
+    IF      shift, and go to state 5
+    ASSIGN  shift, and go to state 6
+    WHILE   shift, and go to state 7
+    PROC    shift, and go to state 8
+    CALL    shift, and go to state 9
+    RETURN  shift, and go to state 10
+    PRINT   shift, and go to state 11
+
+    $default  reduce using rule 3 (cmdsconf)
+
+    cmds       go to state 49
+    cmdsconf   go to state 50
+    cmd        go to state 13
+    simplecmd  go to state 14
+    defcmd     go to state 15
+    assigncmd  go to state 16
+    readcmd    go to state 17
+    printcmd   go to state 18
+    returncmd  go to state 19
+    structcmd  go to state 20
+    ifstmt     go to state 21
+    whilestmt  go to state 22
+    procstmt   go to state 23
+    callstmt   go to state 24
+
+
+State 14
+
+    5 cmd: simplecmd .
+
+    $default  reduce using rule 5 (cmd)
+
+
+State 15
+
+    7 simplecmd: defcmd .
+
+    $default  reduce using rule 7 (simplecmd)
+
+
+State 16
+
+    8 simplecmd: assigncmd .
+
+    $default  reduce using rule 8 (simplecmd)
+
+
+State 17
+
+    9 simplecmd: readcmd .
+
+    $default  reduce using rule 9 (simplecmd)
+
+
+State 18
+
+   10 simplecmd: printcmd .
+
+    $default  reduce using rule 10 (simplecmd)
+
+
+State 19
+
+   11 simplecmd: returncmd .
+
+    $default  reduce using rule 11 (simplecmd)
+
+
+State 20
+
+    6 cmd: structcmd .
+
+    $default  reduce using rule 6 (cmd)
+
+
+State 21
+
+   59 structcmd: ifstmt .
+
+    $default  reduce using rule 59 (structcmd)
+
+
+State 22
+
+   60 structcmd: whilestmt .
+
+    $default  reduce using rule 60 (structcmd)
+
+
+State 23
+
+   61 structcmd: procstmt .
+
+    $default  reduce using rule 61 (structcmd)
+
+
+State 24
+
+   62 structcmd: callstmt .
+
+    $default  reduce using rule 62 (structcmd)
+
+
+State 25
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+State 26
+
+   16 declaration: id . SEP_COL dtype
+
+    SEP_COL  shift, and go to state 51
+
+
+State 27
+
+   12 defcmd: DEF declist .
+
+    $default  reduce using rule 12 (defcmd)
+
+
+State 28
+
+   13 declist: declaration . declistconf
+
+    SEP_SEMICOL  shift, and go to state 52
+
+    $default  reduce using rule 14 (declistconf)
+
+    declistconf  go to state 53
+
+
+State 29
+
+   46 readcmd: READ id . readcmdconf
+
+    SEP_SQBR  shift, and go to state 54
+
+    $default  reduce using rule 47 (readcmdconf)
+
+    readcmdconf  go to state 55
+
+
+State 30
+
+   29 symbolvalue: id . symbolvalueid
+
+    SEP_SQBR  shift, and go to state 56
+
+    $default  reduce using rule 32 (symbolvalueid)
+
+    symbolvalueid  go to state 57
+
+
+State 31
+
+   30 symbolvalue: constant .
+
+    $default  reduce using rule 30 (symbolvalue)
+
+
+State 32
+
+   31 symbolvalue: SEP_SQBR . symbolvalueconf
+
+    id        shift, and go to state 58
+    constant  shift, and go to state 59
+
+    symbolvalueconf  go to state 60
+
+
+State 33
+
+   67 basiccondition: symbolvalue . comparisonoperator basicconditionconf
+
+    OP_LT   shift, and go to state 61
+    OP_LTE  shift, and go to state 62
+    OP_EQ   shift, and go to state 63
+    OP_NEQ  shift, and go to state 64
+    OP_RT   shift, and go to state 65
+    OP_RTE  shift, and go to state 66
+
+    comparisonoperator  go to state 67
+
+
+State 34
+
+   63 ifstmt: IF condition . STARTIF cmds FINISHIF
+
+    STARTIF  shift, and go to state 68
+
+
+State 35
+
+   64 condition: basiccondition . conditionconf
+
+    OP_OR   shift, and go to state 69
+    OP_AND  shift, and go to state 70
+
+    $default  reduce using rule 65 (conditionconf)
+
+    conditionconf    go to state 71
+    logicaloperator  go to state 72
+
+
+State 36
+
+   25 assigncmd: ASSIGN id . SEP_COL assigncmdconf
+
+    SEP_COL  shift, and go to state 73
+
+
+State 37
+
+   78 whilestmt: WHILE condition . STARTWHILE cmds FINISHWHILE
+
+    STARTWHILE  shift, and go to state 74
+
+
+State 38
+
+   79 procstmt: PROC id . SEP_RBR procstmtconf
+
+    SEP_RBR  shift, and go to state 75
+
+
+State 39
+
+   82 callstmt: CALL id . SEP_RBR paramslist SEP_RBREND
+
+    SEP_RBR  shift, and go to state 76
+
+
+State 40
+
+   44 factor: SEP_RBR . expressionstart SEP_RBREND
+
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    SEP_SQBR  shift, and go to state 32
+    SEP_RBR   shift, and go to state 40
+
+    symbolvalue      go to state 41
+    expressionstart  go to state 77
+    term             go to state 43
+    factor           go to state 44
+
+
+State 41
+
+   45 factor: symbolvalue .
+
+    $default  reduce using rule 45 (factor)
+
+
+State 42
+
+   57 returncmdconf: expressionstart .
+
+    $default  reduce using rule 57 (returncmdconf)
+
+
+State 43
+
+   36 expressionstart: term . expression
+
+    OP_PLUS   shift, and go to state 78
+    OP_MINUS  shift, and go to state 79
+
+    $default  reduce using rule 39 (expression)
+
+    expression  go to state 80
+
+
+State 44
+
+   40 term: factor . muldiv
+
+    OP_MUL  shift, and go to state 81
+    OP_DIV  shift, and go to state 82
+
+    $default  reduce using rule 43 (muldiv)
+
+    muldiv  go to state 83
+
+
+State 45
+
+   56 returncmd: RETURN returncmdconf .
+
+    $default  reduce using rule 56 (returncmd)
+
+
+State 46
+
+   58 returncmdconf: callstmt .
+
+    $default  reduce using rule 58 (returncmdconf)
+
+
+State 47
+
+   49 printcmd: PRINT SEP_RBR . expressionprint SEP_RBREND
+
+    CALL      shift, and go to state 9
+    id        shift, and go to state 84
+    constant  shift, and go to state 85
+
+    expressionprint  go to state 86
+    factorprint      go to state 87
+    callstmt         go to state 88
+
+
+State 48
+
+    1 program: START cmds FINISH .
+
+    $default  reduce using rule 1 (program)
+
+
+State 49
+
+    4 cmdsconf: cmds .
+
+    $default  reduce using rule 4 (cmdsconf)
+
+
+State 50
+
+    2 cmds: cmd cmdsconf .
+
+    $default  reduce using rule 2 (cmds)
+
+
+State 51
+
+   16 declaration: id SEP_COL . dtype
+
+    NUMBER  shift, and go to state 89
+    STRING  shift, and go to state 90
+    CHAR    shift, and go to state 91
+    ARRAY   shift, and go to state 92
+
+    dtype      go to state 93
+    primitive  go to state 94
+    arraydecl  go to state 95
+
+
+State 52
+
+   15 declistconf: SEP_SEMICOL . declist
+
+    id  shift, and go to state 26
+
+    declist      go to state 96
+    declaration  go to state 28
+
+
+State 53
+
+   13 declist: declaration declistconf .
+
+    $default  reduce using rule 13 (declist)
+
+
+State 54
+
+   48 readcmdconf: SEP_SQBR . symbolvalueconf
+
+    id        shift, and go to state 58
+    constant  shift, and go to state 59
+
+    symbolvalueconf  go to state 97
+
+
+State 55
+
+   46 readcmd: READ id readcmdconf .
+
+    $default  reduce using rule 46 (readcmd)
+
+
+State 56
+
+   33 symbolvalueid: SEP_SQBR . symbolvalueconf
+
+    id        shift, and go to state 58
+    constant  shift, and go to state 59
+
+    symbolvalueconf  go to state 98
+
+
+State 57
+
+   29 symbolvalue: id symbolvalueid .
+
+    $default  reduce using rule 29 (symbolvalue)
+
+
+State 58
+
+   34 symbolvalueconf: id . SEP_SQBREND
+
+    SEP_SQBREND  shift, and go to state 99
+
+
+State 59
+
+   35 symbolvalueconf: constant . SEP_SQBREND
+
+    SEP_SQBREND  shift, and go to state 100
+
+
+State 60
+
+   31 symbolvalue: SEP_SQBR symbolvalueconf .
+
+    $default  reduce using rule 31 (symbolvalue)
+
+
+State 61
+
+   70 comparisonoperator: OP_LT .
+
+    $default  reduce using rule 70 (comparisonoperator)
+
+
+State 62
+
+   72 comparisonoperator: OP_LTE .
+
+    $default  reduce using rule 72 (comparisonoperator)
+
+
+State 63
+
+   74 comparisonoperator: OP_EQ .
+
+    $default  reduce using rule 74 (comparisonoperator)
+
+
+State 64
+
+   75 comparisonoperator: OP_NEQ .
+
+    $default  reduce using rule 75 (comparisonoperator)
+
+
+State 65
+
+   71 comparisonoperator: OP_RT .
+
+    $default  reduce using rule 71 (comparisonoperator)
+
+
+State 66
+
+   73 comparisonoperator: OP_RTE .
+
+    $default  reduce using rule 73 (comparisonoperator)
+
+
+State 67
+
+   67 basiccondition: symbolvalue comparisonoperator . basicconditionconf
+
+    UNDEFINED  shift, and go to state 101
+    id         shift, and go to state 30
+    constant   shift, and go to state 31
+    SEP_SQBR   shift, and go to state 32
+
+    symbolvalue         go to state 102
+    basicconditionconf  go to state 103
+
+
+State 68
+
+   63 ifstmt: IF condition STARTIF . cmds FINISHIF
+
+    DEF     shift, and go to state 3
+    READ    shift, and go to state 4
+    IF      shift, and go to state 5
+    ASSIGN  shift, and go to state 6
+    WHILE   shift, and go to state 7
+    PROC    shift, and go to state 8
+    CALL    shift, and go to state 9
+    RETURN  shift, and go to state 10
+    PRINT   shift, and go to state 11
+
+    cmds       go to state 104
+    cmd        go to state 13
+    simplecmd  go to state 14
+    defcmd     go to state 15
+    assigncmd  go to state 16
+    readcmd    go to state 17
+    printcmd   go to state 18
+    returncmd  go to state 19
+    structcmd  go to state 20
+    ifstmt     go to state 21
+    whilestmt  go to state 22
+    procstmt   go to state 23
+    callstmt   go to state 24
+
+
+State 69
+
+   77 logicaloperator: OP_OR .
+
+    $default  reduce using rule 77 (logicaloperator)
+
+
+State 70
+
+   76 logicaloperator: OP_AND .
+
+    $default  reduce using rule 76 (logicaloperator)
+
+
+State 71
+
+   64 condition: basiccondition conditionconf .
+
+    $default  reduce using rule 64 (condition)
+
+
+State 72
+
+   66 conditionconf: logicaloperator . condition
+
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    SEP_SQBR  shift, and go to state 32
+
+    symbolvalue     go to state 33
+    condition       go to state 105
+    basiccondition  go to state 35
+
+
+State 73
+
+   25 assigncmd: ASSIGN id SEP_COL . assigncmdconf
+
+    UNDEFINED  shift, and go to state 106
+    id         shift, and go to state 30
+    constant   shift, and go to state 31
+    SEP_SQBR   shift, and go to state 32
+    SEP_RBR    shift, and go to state 107
+
+    assigncmdconf  go to state 108
+    symbolvalue    go to state 109
+
+
+State 74
+
+   78 whilestmt: WHILE condition STARTWHILE . cmds FINISHWHILE
+
+    DEF     shift, and go to state 3
+    READ    shift, and go to state 4
+    IF      shift, and go to state 5
+    ASSIGN  shift, and go to state 6
+    WHILE   shift, and go to state 7
+    PROC    shift, and go to state 8
+    CALL    shift, and go to state 9
+    RETURN  shift, and go to state 10
+    PRINT   shift, and go to state 11
+
+    cmds       go to state 110
+    cmd        go to state 13
+    simplecmd  go to state 14
+    defcmd     go to state 15
+    assigncmd  go to state 16
+    readcmd    go to state 17
+    printcmd   go to state 18
+    returncmd  go to state 19
+    structcmd  go to state 20
+    ifstmt     go to state 21
+    whilestmt  go to state 22
+    procstmt   go to state 23
+    callstmt   go to state 24
+
+
+State 75
+
+   79 procstmt: PROC id SEP_RBR . procstmtconf
+
+    id          shift, and go to state 26
+    SEP_RBREND  shift, and go to state 111
+
+    declist       go to state 112
+    declaration   go to state 28
+    procstmtconf  go to state 113
+
+
+State 76
+
+   82 callstmt: CALL id SEP_RBR . paramslist SEP_RBREND
+
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    SEP_SQBR  shift, and go to state 32
+    SEP_RBR   shift, and go to state 40
+
+    $default  reduce using rule 84 (paramslist)
+
+    symbolvalue      go to state 41
+    expressionstart  go to state 114
+    term             go to state 43
+    factor           go to state 44
+    paramslist       go to state 115
+
+
+State 77
+
+   44 factor: SEP_RBR expressionstart . SEP_RBREND
+
+    SEP_RBREND  shift, and go to state 116
+
+
+State 78
+
+   37 expression: OP_PLUS . term expression
+
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    SEP_SQBR  shift, and go to state 32
+    SEP_RBR   shift, and go to state 40
+
+    symbolvalue  go to state 41
+    term         go to state 117
+    factor       go to state 44
+
+
+State 79
+
+   38 expression: OP_MINUS . term expression
+
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    SEP_SQBR  shift, and go to state 32
+    SEP_RBR   shift, and go to state 40
+
+    symbolvalue  go to state 41
+    term         go to state 118
+    factor       go to state 44
+
+
+State 80
+
+   36 expressionstart: term expression .
+
+    $default  reduce using rule 36 (expressionstart)
+
+
+State 81
+
+   41 muldiv: OP_MUL . factor muldiv
+
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    SEP_SQBR  shift, and go to state 32
+    SEP_RBR   shift, and go to state 40
+
+    symbolvalue  go to state 41
+    factor       go to state 119
+
+
+State 82
+
+   42 muldiv: OP_DIV . factor muldiv
+
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    SEP_SQBR  shift, and go to state 32
+    SEP_RBR   shift, and go to state 40
+
+    symbolvalue  go to state 41
+    factor       go to state 120
+
+
+State 83
+
+   40 term: factor muldiv .
+
+    $default  reduce using rule 40 (term)
+
+
+State 84
+
+   53 factorprint: id .
+
+    $default  reduce using rule 53 (factorprint)
+
+
+State 85
+
+   54 factorprint: constant .
+
+    $default  reduce using rule 54 (factorprint)
+
+
+State 86
+
+   49 printcmd: PRINT SEP_RBR expressionprint . SEP_RBREND
+
+    SEP_RBREND  shift, and go to state 121
+
+
+State 87
+
+   50 expressionprint: factorprint . expressionprintconf
+
+    OP_PLUS  shift, and go to state 122
+
+    $default  reduce using rule 51 (expressionprintconf)
+
+    expressionprintconf  go to state 123
+
+
+State 88
+
+   55 factorprint: callstmt .
+
+    $default  reduce using rule 55 (factorprint)
+
+
+State 89
+
+   19 primitive: NUMBER .
+
+    $default  reduce using rule 19 (primitive)
+
+
+State 90
+
+   20 primitive: STRING .
+
+    $default  reduce using rule 20 (primitive)
+
+
+State 91
+
+   21 primitive: CHAR .
+
+    $default  reduce using rule 21 (primitive)
+
+
+State 92
+
+   22 arraydecl: ARRAY . SEP_SQBR arraydeclconf
+
+    SEP_SQBR  shift, and go to state 124
+
+
+State 93
+
+   16 declaration: id SEP_COL dtype .
+
+    $default  reduce using rule 16 (declaration)
+
+
+State 94
+
+   17 dtype: primitive .
+
+    $default  reduce using rule 17 (dtype)
+
+
+State 95
+
+   18 dtype: arraydecl .
+
+    $default  reduce using rule 18 (dtype)
+
+
+State 96
+
+   15 declistconf: SEP_SEMICOL declist .
+
+    $default  reduce using rule 15 (declistconf)
+
+
+State 97
+
+   48 readcmdconf: SEP_SQBR symbolvalueconf .
+
+    $default  reduce using rule 48 (readcmdconf)
+
+
+State 98
+
+   33 symbolvalueid: SEP_SQBR symbolvalueconf .
+
+    $default  reduce using rule 33 (symbolvalueid)
+
+
+State 99
+
+   34 symbolvalueconf: id SEP_SQBREND .
+
+    $default  reduce using rule 34 (symbolvalueconf)
+
+
+State 100
+
+   35 symbolvalueconf: constant SEP_SQBREND .
+
+    $default  reduce using rule 35 (symbolvalueconf)
+
+
+State 101
+
+   69 basicconditionconf: UNDEFINED .
+
+    $default  reduce using rule 69 (basicconditionconf)
+
+
+State 102
+
+   68 basicconditionconf: symbolvalue .
+
+    $default  reduce using rule 68 (basicconditionconf)
+
+
+State 103
+
+   67 basiccondition: symbolvalue comparisonoperator basicconditionconf .
+
+    $default  reduce using rule 67 (basiccondition)
+
+
+State 104
+
+   63 ifstmt: IF condition STARTIF cmds . FINISHIF
+
+    FINISHIF  shift, and go to state 125
+
+
+State 105
+
+   66 conditionconf: logicaloperator condition .
+
+    $default  reduce using rule 66 (conditionconf)
+
+
+State 106
+
+   28 assigncmdconf: UNDEFINED .
+
+    $default  reduce using rule 28 (assigncmdconf)
+
+
+State 107
+
+   27 assigncmdconf: SEP_RBR . expressionstart SEP_RBREND
+
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    SEP_SQBR  shift, and go to state 32
+    SEP_RBR   shift, and go to state 40
+
+    symbolvalue      go to state 41
+    expressionstart  go to state 126
+    term             go to state 43
+    factor           go to state 44
+
+
+State 108
+
+   25 assigncmd: ASSIGN id SEP_COL assigncmdconf .
+
+    $default  reduce using rule 25 (assigncmd)
+
+
+State 109
+
+   26 assigncmdconf: symbolvalue .
+
+    $default  reduce using rule 26 (assigncmdconf)
+
+
+State 110
+
+   78 whilestmt: WHILE condition STARTWHILE cmds . FINISHWHILE
+
+    FINISHWHILE  shift, and go to state 127
+
+
+State 111
+
+   80 procstmtconf: SEP_RBREND . STARTPROC cmds FINISHPROC
+
+    STARTPROC  shift, and go to state 128
+
+
+State 112
+
+   81 procstmtconf: declist . SEP_RBREND STARTPROC cmds FINISHPROC
+
+    SEP_RBREND  shift, and go to state 129
+
+
+State 113
+
+   79 procstmt: PROC id SEP_RBR procstmtconf .
+
+    $default  reduce using rule 79 (procstmt)
+
+
+State 114
+
+   83 paramslist: expressionstart . paramslistconf
+
+    SEP_COM  shift, and go to state 130
+
+    $default  reduce using rule 85 (paramslistconf)
+
+    paramslistconf  go to state 131
+
+
+State 115
+
+   82 callstmt: CALL id SEP_RBR paramslist . SEP_RBREND
+
+    SEP_RBREND  shift, and go to state 132
+
+
+State 116
+
+   44 factor: SEP_RBR expressionstart SEP_RBREND .
+
+    $default  reduce using rule 44 (factor)
+
+
+State 117
+
+   37 expression: OP_PLUS term . expression
+
+    OP_PLUS   shift, and go to state 78
+    OP_MINUS  shift, and go to state 79
+
+    $default  reduce using rule 39 (expression)
+
+    expression  go to state 133
+
+
+State 118
+
+   38 expression: OP_MINUS term . expression
+
+    OP_PLUS   shift, and go to state 78
+    OP_MINUS  shift, and go to state 79
+
+    $default  reduce using rule 39 (expression)
+
+    expression  go to state 134
+
+
+State 119
+
+   41 muldiv: OP_MUL factor . muldiv
+
+    OP_MUL  shift, and go to state 81
+    OP_DIV  shift, and go to state 82
+
+    $default  reduce using rule 43 (muldiv)
+
+    muldiv  go to state 135
+
+
+State 120
+
+   42 muldiv: OP_DIV factor . muldiv
+
+    OP_MUL  shift, and go to state 81
+    OP_DIV  shift, and go to state 82
+
+    $default  reduce using rule 43 (muldiv)
+
+    muldiv  go to state 136
+
+
+State 121
+
+   49 printcmd: PRINT SEP_RBR expressionprint SEP_RBREND .
+
+    $default  reduce using rule 49 (printcmd)
+
+
+State 122
+
+   52 expressionprintconf: OP_PLUS . expressionprint
+
+    CALL      shift, and go to state 9
+    id        shift, and go to state 84
+    constant  shift, and go to state 85
+
+    expressionprint  go to state 137
+    factorprint      go to state 87
+    callstmt         go to state 88
+
+
+State 123
+
+   50 expressionprint: factorprint expressionprintconf .
+
+    $default  reduce using rule 50 (expressionprint)
+
+
+State 124
+
+   22 arraydecl: ARRAY SEP_SQBR . arraydeclconf
+
+    id        shift, and go to state 138
+    constant  shift, and go to state 139
+
+    arraydeclconf  go to state 140
+
+
+State 125
+
+   63 ifstmt: IF condition STARTIF cmds FINISHIF .
+
+    $default  reduce using rule 63 (ifstmt)
+
+
+State 126
+
+   27 assigncmdconf: SEP_RBR expressionstart . SEP_RBREND
+
+    SEP_RBREND  shift, and go to state 141
+
+
+State 127
+
+   78 whilestmt: WHILE condition STARTWHILE cmds FINISHWHILE .
+
+    $default  reduce using rule 78 (whilestmt)
+
+
+State 128
+
+   80 procstmtconf: SEP_RBREND STARTPROC . cmds FINISHPROC
+
+    DEF     shift, and go to state 3
+    READ    shift, and go to state 4
+    IF      shift, and go to state 5
+    ASSIGN  shift, and go to state 6
+    WHILE   shift, and go to state 7
+    PROC    shift, and go to state 8
+    CALL    shift, and go to state 9
+    RETURN  shift, and go to state 10
+    PRINT   shift, and go to state 11
+
+    cmds       go to state 142
+    cmd        go to state 13
+    simplecmd  go to state 14
+    defcmd     go to state 15
+    assigncmd  go to state 16
+    readcmd    go to state 17
+    printcmd   go to state 18
+    returncmd  go to state 19
+    structcmd  go to state 20
+    ifstmt     go to state 21
+    whilestmt  go to state 22
+    procstmt   go to state 23
+    callstmt   go to state 24
+
+
+State 129
+
+   81 procstmtconf: declist SEP_RBREND . STARTPROC cmds FINISHPROC
+
+    STARTPROC  shift, and go to state 143
+
+
+State 130
+
+   86 paramslistconf: SEP_COM . paramslist
+
+    id        shift, and go to state 30
+    constant  shift, and go to state 31
+    SEP_SQBR  shift, and go to state 32
+    SEP_RBR   shift, and go to state 40
+
+    $default  reduce using rule 84 (paramslist)
+
+    symbolvalue      go to state 41
+    expressionstart  go to state 114
+    term             go to state 43
+    factor           go to state 44
+    paramslist       go to state 144
+
+
+State 131
+
+   83 paramslist: expressionstart paramslistconf .
+
+    $default  reduce using rule 83 (paramslist)
+
+
+State 132
+
+   82 callstmt: CALL id SEP_RBR paramslist SEP_RBREND .
+
+    $default  reduce using rule 82 (callstmt)
+
+
+State 133
+
+   37 expression: OP_PLUS term expression .
+
+    $default  reduce using rule 37 (expression)
+
+
+State 134
+
+   38 expression: OP_MINUS term expression .
+
+    $default  reduce using rule 38 (expression)
+
+
+State 135
+
+   41 muldiv: OP_MUL factor muldiv .
+
+    $default  reduce using rule 41 (muldiv)
+
+
+State 136
+
+   42 muldiv: OP_DIV factor muldiv .
+
+    $default  reduce using rule 42 (muldiv)
+
+
+State 137
+
+   52 expressionprintconf: OP_PLUS expressionprint .
+
+    $default  reduce using rule 52 (expressionprintconf)
+
+
+State 138
+
+   24 arraydeclconf: id . SEP_SQBREND OF primitive
+
+    SEP_SQBREND  shift, and go to state 145
+
+
+State 139
+
+   23 arraydeclconf: constant . SEP_SQBREND OF primitive
+
+    SEP_SQBREND  shift, and go to state 146
+
+
+State 140
+
+   22 arraydecl: ARRAY SEP_SQBR arraydeclconf .
+
+    $default  reduce using rule 22 (arraydecl)
+
+
+State 141
+
+   27 assigncmdconf: SEP_RBR expressionstart SEP_RBREND .
+
+    $default  reduce using rule 27 (assigncmdconf)
+
+
+State 142
+
+   80 procstmtconf: SEP_RBREND STARTPROC cmds . FINISHPROC
+
+    FINISHPROC  shift, and go to state 147
+
+
+State 143
+
+   81 procstmtconf: declist SEP_RBREND STARTPROC . cmds FINISHPROC
+
+    DEF     shift, and go to state 3
+    READ    shift, and go to state 4
+    IF      shift, and go to state 5
+    ASSIGN  shift, and go to state 6
+    WHILE   shift, and go to state 7
+    PROC    shift, and go to state 8
+    CALL    shift, and go to state 9
+    RETURN  shift, and go to state 10
+    PRINT   shift, and go to state 11
+
+    cmds       go to state 148
+    cmd        go to state 13
+    simplecmd  go to state 14
+    defcmd     go to state 15
+    assigncmd  go to state 16
+    readcmd    go to state 17
+    printcmd   go to state 18
+    returncmd  go to state 19
+    structcmd  go to state 20
+    ifstmt     go to state 21
+    whilestmt  go to state 22
+    procstmt   go to state 23
+    callstmt   go to state 24
+
+
+State 144
+
+   86 paramslistconf: SEP_COM paramslist .
+
+    $default  reduce using rule 86 (paramslistconf)
+
+
+State 145
+
+   24 arraydeclconf: id SEP_SQBREND . OF primitive
+
+    OF  shift, and go to state 149
+
+
+State 146
+
+   23 arraydeclconf: constant SEP_SQBREND . OF primitive
+
+    OF  shift, and go to state 150
+
+
+State 147
+
+   80 procstmtconf: SEP_RBREND STARTPROC cmds FINISHPROC .
+
+    $default  reduce using rule 80 (procstmtconf)
+
+
+State 148
+
+   81 procstmtconf: declist SEP_RBREND STARTPROC cmds . FINISHPROC
+
+    FINISHPROC  shift, and go to state 151
+
+
+State 149
+
+   24 arraydeclconf: id SEP_SQBREND OF . primitive
+
+    NUMBER  shift, and go to state 89
+    STRING  shift, and go to state 90
+    CHAR    shift, and go to state 91
+
+    primitive  go to state 152
+
+
+State 150
+
+   23 arraydeclconf: constant SEP_SQBREND OF . primitive
+
+    NUMBER  shift, and go to state 89
+    STRING  shift, and go to state 90
+    CHAR    shift, and go to state 91
+
+    primitive  go to state 153
+
+
+State 151
+
+   81 procstmtconf: declist SEP_RBREND STARTPROC cmds FINISHPROC .
+
+    $default  reduce using rule 81 (procstmtconf)
+
+
+State 152
+
+   24 arraydeclconf: id SEP_SQBREND OF primitive .
+
+    $default  reduce using rule 24 (arraydeclconf)
+
+
+State 153
+
+   23 arraydeclconf: constant SEP_SQBREND OF primitive .
+
+    $default  reduce using rule 23 (arraydeclconf)
