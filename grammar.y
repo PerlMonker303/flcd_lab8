@@ -1,46 +1,25 @@
 %{
 #include <stdio.h>
+extern FILE *yyin;
+extern char *yytext;
+extern int yylineno;
 %}
 
-%token START
-%token FINISH
-%token DEF
-%token NUMBER
-%token STRING
-%token CHAR
-%token ARRAY
-%token OF
-%token UNDEFINED
-%token READ
-%token IF
-%token STARTIF
-%token FINISHIF
-%token ASSIGN
-%token WHILE
-%token STARTWHILE
-%token FINISHWHILE
-%token PROC
-%token STARTPROC
-%token FINISHPROC
-%token CALL 
-%token RETURN 
-%token PRINT
-%token id
-%token constant
-%token Epsilon
+%token START FINISH DEF NUMBER STRING CHAR ARRAY OF UNDEFINED READ IF STARTIF FINISHIF ASSIGN
+%token WHILE STARTWHILE FINISHWHILE PROC STARTPROC FINISHPROC CALL RETURN PRINT
+%token id constant
 
 %token NEGPOSDIGIT
 %token ERRORNUMCONST
-%token OPERATOR
-%token SEPARATOR
-%token SPACE
+%token OP_PLUS OP_MINUS OP_MUL OP_DIV OP_LT OP_LTE OP_EQ OP_NEQ OP_RT OP_RTE OP_OR OP_AND
+%token SEP_SEMICOL SEP_COM SEP_COL SEP_SQBR SEP_SQBREND SEP_RBR SEP_RBREND
 
 %%
 program: START cmds FINISH
 		;
 cmds: cmd cmdsconf
 		;
-cmdsconf: Epsilon 
+cmdsconf: /*epsilon*/ 
 		| cmds
 		;
 cmd: simplecmd 
@@ -56,10 +35,10 @@ defcmd: DEF declist
 		;
 declist: declaration declistconf
 		;
-declistconf: Epsilon 
-		| ';' declist
+declistconf: /*epsilon*/ 
+		| SEP_SEMICOL declist
 		;
-declaration: id ':' dtype
+declaration: id SEP_COL dtype
 		;
 dtype: primitive 
 		| arraydecl
@@ -68,53 +47,53 @@ primitive: NUMBER
 		| STRING 
 		| CHAR
 		;
-arraydecl: ARRAY '[' arraydeclconf
+arraydecl: ARRAY SEP_SQBR arraydeclconf
 		;
-arraydeclconf: constant ']' OF primitive 
-		| id ']' OF primitive
+arraydeclconf: constant SEP_SQBREND OF primitive 
+		| id SEP_SQBREND OF primitive
 		;
-assigncmd: ASSIGN id ':' assigncmdconf
+assigncmd: ASSIGN id SEP_COL assigncmdconf
 		;
 assigncmdconf: symbolvalue
-		| '(' expressionstart ')'
+		| SEP_RBR expressionstart SEP_RBREND
 		| UNDEFINED
 		;
 symbolvalue: id symbolvalueid 
 		| constant 
-		| '[' symbolvalueconf
+		| SEP_SQBR symbolvalueconf
 		;
-symbolvalueid: Epsilon 
-		| '[' symbolvalueconf
+symbolvalueid: /*epsilon*/ 
+		| SEP_SQBR symbolvalueconf
 		;
-symbolvalueconf: id ']' 
-		| constant ']'
+symbolvalueconf: id SEP_SQBREND 
+		| constant SEP_SQBREND
 		;
 expressionstart: term expression
 		;
-expression: '+' term expression 
-		| '-' term expression 
-		| Epsilon
+expression: OP_PLUS term expression 
+		| OP_MINUS term expression 
+		| /*epsilon*/
 		;
 term: factor muldiv
 		;
-muldiv: '*' factor muldiv 
-		| '/' factor muldiv 
-		| Epsilon
+muldiv: OP_MUL factor muldiv 
+		| OP_DIV factor muldiv 
+		| /*epsilon*/
 		;
-factor: '(' expressionstart ')'
+factor: SEP_RBR expressionstart SEP_RBREND
 		| symbolvalue
 		;
 readcmd: READ id readcmdconf
 		;
-readcmdconf: Epsilon 
-		| '[' symbolvalueconf
+readcmdconf: /*epsilon*/ 
+		| SEP_SQBR symbolvalueconf
 		;
-printcmd: PRINT '(' expressionprint ')'
+printcmd: PRINT SEP_RBR expressionprint SEP_RBREND
 		;
 expressionprint: factorprint expressionprintconf
 		;
-expressionprintconf: Epsilon 
-		| '+' expressionprint
+expressionprintconf: /*epsilon*/ 
+		| OP_PLUS expressionprint
 		;
 factorprint: id 
 		| constant 
@@ -134,7 +113,7 @@ ifstmt: IF condition STARTIF cmds FINISHIF
 		;
 condition: basiccondition conditionconf
 		;
-conditionconf: Epsilon 
+conditionconf: /*epsilon*/ 
 		| logicaloperator condition
 		;
 basiccondition: symbolvalue comparisonoperator basicconditionconf
@@ -142,38 +121,47 @@ basiccondition: symbolvalue comparisonoperator basicconditionconf
 basicconditionconf: symbolvalue 
 		| UNDEFINED
 		;
-comparisonoperator: "<"
-		| ">"
-		| "<="
-		| ">="
-		| "==="
-		| "!=="
+comparisonoperator: OP_LT
+		| OP_RT
+		| OP_LTE
+		| OP_RTE
+		| OP_EQ
+		| OP_NEQ
 		;
-logicaloperator: "&&"
-		| "||"
+logicaloperator: OP_AND
+		| OP_OR
 		;
 whilestmt: WHILE condition STARTWHILE cmds FINISHWHILE
 		;
-procstmt: PROC id '(' procstmtconf
+procstmt: PROC id SEP_RBR procstmtconf
 		;
-procstmtconf: ')' STARTPROC cmds FINISHPROC 
-		| declist ')' STARTPROC cmds FINISHPROC
+procstmtconf: SEP_RBREND STARTPROC cmds FINISHPROC 
+		| declist SEP_RBREND STARTPROC cmds FINISHPROC
 		;
-callstmt: CALL id '(' paramslist ')'
+callstmt: CALL id SEP_RBR paramslist SEP_RBREND
 		;
 paramslist: expressionstart paramslistconf 
-		| Epsilon
+		| /*epsilon*/
 		;
-paramslistconf: Epsilon 
-		| ',' paramslist
+paramslistconf: /*epsilon*/ 
+		| SEP_COM paramslist
 		;
 %%
 int main(int argc, char **argv)
 {
-  yyparse();
+	if (argc == 2) {
+		yyin = fopen(argv[1], "r");
+		yyparse();
+	}
+	else{
+		printf("No input file given!\n");
+	}
+  	if(0==yyparse()) printf("Result yyparse OK");
 }
 
 int yyerror(char *s)
 {
-  fprintf(stderr, "error: %s\n", s);
+    printf("Error on line #%d\n", yylineno);
+    printf("Unexpected token: '%s'\n", yytext);
+    return 0;
 }

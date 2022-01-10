@@ -1,6 +1,4 @@
-/*** Definition Section has one variable
-which can be accessed inside yylex() 
-and main() ***/
+%option yylineno
 %{
 # include "grammar.tab.h"
 %}
@@ -14,15 +12,9 @@ CHARACTER [A-Za-z0-9 ]
 
 %%
 
+[ \t\n\r]                {}
+
 ("-"|"+")0+             {return NEGPOSDIGIT;}
-
-{DIGIT}+{LETTER}+({DIGIT}|{LETTER})*  {return ERRORNUMCONST;}
-
-["-"]{NON_ZERO_DIGIT}{DIGIT}*	      {return NUMBER;}
-
-"'"{LETTER}"'"|"'"{DIGIT}"'" {return CHAR;}
-
-\"{CHARACTER}+\"  {return STRING;}
 
 "START" {return START;}
 "FINISH" {return FINISH;}
@@ -48,16 +40,46 @@ CHARACTER [A-Za-z0-9 ]
 "RETURN" {return RETURN;}
 "PRINT"  {return PRINT;}
 
+
+{DIGIT}{1}                               {return constant;}
+["-"]?{NON_ZERO_DIGIT}{DIGIT}*	      {return constant;}
+
 {ID} 		      {return id;}
 
-"+"|"-"|"*"|"/"|"<"|"<="|"==="|"!=="|">="|">"|"||"|"&&" {return OPERATOR;}
+"+" {return OP_PLUS;}
+"-" {return OP_MINUS;}
+"*" {return OP_MUL;}
+"/" {return OP_DIV;}
+"<" {return OP_LT;}
+"<=" {return OP_LTE;}
+"===" {return OP_EQ;}
+"!==" {return OP_NEQ;}
+">" {return OP_RT;}
+">=" {return OP_RTE;}
+"||" {return OP_OR;}
+"&&" {return OP_AND;}
 
-";"|","|":"|"["|"]"|"("|")" {return SEPARATOR;}
+";" {return SEP_SEMICOL;}
+"," {return SEP_COM;}
+":" {return SEP_COL;}
+"[" {return SEP_SQBR;}
+"]" {return SEP_SQBREND;}
+"(" {return SEP_RBR;}
+")" {return SEP_RBREND;}
 
-[ \t\n]+ {return SPACE;}		/* eat up whitespace or new lines */
-		 
-.  printf("Error\n");
+{DIGIT}+{LETTER}+({DIGIT}|{LETTER})*  {return ERRORNUMCONST;}
+
+"'"{LETTER}"'"|"'"{DIGIT}"'" {return constant;}
+
+\"{CHARACTER}+\"  {return constant;}
+
+. {printf("%s unknown character\n", yytext); exit(0);}
+
 %%
+
+int yywrap() {
+    return 1;
+}
 /*
 int yywrap(){}
 

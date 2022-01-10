@@ -70,12 +70,27 @@ extern int yydebug;
     PRINT = 280,
     id = 281,
     constant = 282,
-    Epsilon = 283,
-    NEGPOSDIGIT = 284,
-    ERRORNUMCONST = 285,
-    OPERATOR = 286,
-    SEPARATOR = 287,
-    SPACE = 288
+    NEGPOSDIGIT = 283,
+    ERRORNUMCONST = 284,
+    OP_PLUS = 285,
+    OP_MINUS = 286,
+    OP_MUL = 287,
+    OP_DIV = 288,
+    OP_LT = 289,
+    OP_LTE = 290,
+    OP_EQ = 291,
+    OP_NEQ = 292,
+    OP_RT = 293,
+    OP_RTE = 294,
+    OP_OR = 295,
+    OP_AND = 296,
+    SEP_SEMICOL = 297,
+    SEP_COM = 298,
+    SEP_COL = 299,
+    SEP_SQBR = 300,
+    SEP_SQBREND = 301,
+    SEP_RBR = 302,
+    SEP_RBREND = 303
   };
 #endif
 

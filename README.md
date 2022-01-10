@@ -11,6 +11,4 @@ To run:
 
 # Bison - lab 9
 
-bison -d grammar.y // creates .tab.c and .tab.h files
-flex lang.lxi // creates lex.yy.c
-cc grammar.tab.c lex.yy.c -lfl // generates grammar.output
+Just "run.sh px.txt"
